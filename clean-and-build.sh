@@ -1,5 +1,7 @@
 #!/bin/sh
 
+START=$(date +%s)
+
 cd ..
 
 # To start fresh, clean your local repository
@@ -49,3 +51,12 @@ echo "===="
 echo "==== BUILDING org.csstudio.ess.product"
 echo "===="
 (cd org.csstudio.ess.product; mvn clean verify)
+
+# Displaying execution time
+DUR=$(echo "$(date +%s) - $START" | bc)
+MDUR=`expr $DUR / 60`; \
+SDUR=`expr $DUR - 60 \* $MDUR`; \
+echo "===="
+echo "==== Building took $MDUR minutes and $SDUR seconds."
+echo "===="
+

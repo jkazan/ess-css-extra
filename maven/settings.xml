@@ -34,6 +34,9 @@
         <!-- Issue warnings instead of aborting on error -->
         <baselineMode>warn</baselineMode>
         <jgit.dirtyWorkingTree>warning</jgit.dirtyWorkingTree>
+
+        <!-- Don't use embedded compiler -->
+        <!-- <maven.compiler.fork>true</maven.compiler.fork> -->
         
         <!-- Skip unit tests -->
         <maven.test.skip>true</maven.test.skip>

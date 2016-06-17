@@ -10,5 +10,6 @@
     <child location="../../diirt/p2/target/repository"/>
     <child location="../../cs-studio/core/p2repo"/>
     <child location="../../cs-studio/applications/p2repo"/>
+    <child location="../../org.csstudio.product/repository/target/repository"/>
   </children>
 </repository>
