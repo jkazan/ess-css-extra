@@ -1,5 +1,14 @@
 # ess-css-extra
 Folder containing all accessory files and folders necessary to compile and deploy ESS version of CS-Studio.
+```
++--[*] ess_css_comp_repo: This repository contains the _Composite P2 Repository_ as described in 
+    |                     [Control System Studio Guide](http://cs-studio.sourceforge.net/docbook/ch04.html#idp157632), needed to manually build the product using Maven.
+    +----- compositeArtifacts.xml 
+    +----- compositeContent.xml
+```
+
+
+
 ## ess_css_comp_repo
 This repository contains the _Composite P2 Repository_ as described in [Control System Studio Guide](http://cs-studio.sourceforge.net/docbook/ch04.html#idp157632), needed to manually build the product using Maven.
 ## home/dot-profile
