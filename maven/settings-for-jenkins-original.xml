@@ -1,7 +1,7 @@
 <!-- Maven settings.xml -->
 <settings>
   <localRepository>
-    /tmp/ESS-CS-Studio/.m2
+    /tmp/Original-CS-Studio/.m2
   </localRepository>
   <profiles>
     <profile>
@@ -14,7 +14,7 @@
              local repositories.
           -->
         <!-- Path to your composite repo -->
-        <csstudio.composite.repo>/tmp/ESS-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
+        <csstudio.composite.repo>/tmp/Original-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
 
         <!-- By default, even if you use a composite repo
              that lists local P2 sites,
