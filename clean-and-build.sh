@@ -1,6 +1,5 @@
 #!/bin/sh
 #
-#
 
 START=$(date +%s)
 
