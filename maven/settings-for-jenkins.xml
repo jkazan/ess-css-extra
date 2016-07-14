@@ -16,7 +16,7 @@
              local repositories.
            -->
            <!-- Path to your composite repo -->
-           <csstudio.composite.repo>/tmp/ESS-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
+           <csstudio.composite.repo>/home/jenkins/workspace/ESS-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
 
         <!-- By default, even if you use a composite repo
              that lists local P2 sites,
