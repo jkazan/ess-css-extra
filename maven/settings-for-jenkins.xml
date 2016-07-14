@@ -2,7 +2,7 @@
 <settings>
 
   <localRepository>
-    /tmp/ESS-CS-Studio/.m2
+    /home/jenkins/workspace/ESS-CS-Studio/.m2
   </localRepository>
 
   <profiles>
