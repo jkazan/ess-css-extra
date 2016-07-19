@@ -2,7 +2,7 @@
 <settings>
 
   <localRepository>
-    /tmp/ESS-CS-Studio/.m2
+    /home/jenkins/workspace/ESS-CS-Studio/.m2
   </localRepository>
 
   <profiles>
@@ -16,7 +16,7 @@
              local repositories.
            -->
            <!-- Path to your composite repo -->
-           <csstudio.composite.repo>/tmp/ESS-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
+           <csstudio.composite.repo>/home/jenkins/workspace/ESS-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
 
         <!-- By default, even if you use a composite repo
              that lists local P2 sites,
@@ -62,8 +62,8 @@
         <configuration>
           <httpConfiguration>
             <all>
-              <connectionTimeout>180000</connectionTimeout>
-              <readTimeout>180000</readTimeout>
+              <connectionTimeout>600000</connectionTimeout>
+              <readTimeout>600000</readTimeout>
             </all>
           </httpConfiguration>
         </configuration>
