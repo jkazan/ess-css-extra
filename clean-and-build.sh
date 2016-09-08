@@ -39,14 +39,19 @@ echo "===="
 (cd cs-studio/applications; time mvn clean verify) | tee 4_cs-studio-applications.log
 
 echo "===="
+echo "==== BUILDING cs-studio/applications"
+echo "===="
+(cd org.csstudio.display.builder; time mvn -Dcss-repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo -Declipse-site=http://download.eclipse.org/releases/neon clean verify) | tee 5_org.csstudio.display.builder.log
+
+echo "===="
 echo "==== BUILDING org.csstudio.product"
 echo "===="
-(cd org.csstudio.product; time mvn clean verify) | tee 5_org.csstudio.product.log
+(cd org.csstudio.product; time mvn clean verify) | tee 6_org.csstudio.product.log
 
 echo "===="
 echo "==== BUILDING org.csstudio.ess.product"
 echo "===="
-(cd org.csstudio.ess.product; time mvn clean verify) | tee 6_org.csstudio.ess.product.log
+(cd org.csstudio.ess.product; time mvn clean verify) | tee 7_org.csstudio.ess.product.log
 
 # Displaying execution time
 DUR=$(echo "$(date +%s) - $START" | bc)
