@@ -41,7 +41,7 @@ echo "===="
 echo "===="
 echo "==== BUILDING cs-studio/applications"
 echo "===="
-(cd org.csstudio.display.builder; time mvn -Dcss-repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo -Declipse-site=http://download.eclipse.org/releases/neon clean verify) | tee 5_org.csstudio.display.builder.log
+(cd org.csstudio.display.builder; time mvn -Dcss-repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo -Declipse-site=http://download.eclipse.org/releases/mars clean verify) | tee 5_org.csstudio.display.builder.log
 
 echo "===="
 echo "==== BUILDING org.csstudio.product"
