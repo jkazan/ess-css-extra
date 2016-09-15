@@ -53,6 +53,8 @@ echo "==== BUILDING org.csstudio.ess.product"
 echo "===="
 (cd org.csstudio.ess.product; time mvn clean verify) | tee 7_org.csstudio.ess.product.log
 
+tail ?_*.log
+
 # Displaying execution time
 DUR=$(echo "$(date +%s) - $START" | bc)
 MDUR=`expr $DUR / 60`; \
