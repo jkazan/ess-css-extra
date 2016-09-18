@@ -8,21 +8,21 @@
     <property name="p2.timestamp" value="1395756034000"/>
   </properties>
   <children size="8">
-  <!-- <children size="15">
+  <!-- <children size="15"> -->
     <child location="../../org.csstudio.product/repository/target/repository"/>
     <child location="../../org.csstudio.display.builder/repository/target/repository"/>
     <child location="../../cs-studio/applications/p2repo"/>
     <child location="../../cs-studio/core/p2repo"/>
     <child location="../../diirt/p2/target/repository"/>
     <child location="../../cs-studio-thirdparty/repository/target/repository"/>
-    <child location="../../maven-osgi-bundles/repository/target/repository"/> -->
+    <child location="../../maven-osgi-bundles/repository/target/repository"/>
     <child location="http://download.controlsystemstudio.org/issue/1818"/>
-    <child location="../../cs-studio-eclipse-4.3/rap-e4"/>
+    <!-- <child location="../../cs-studio-eclipse-4.3/rap-e4"/>
     <child location="../../cs-studio-eclipse-4.3/rap-gef"/>
     <child location="../../cs-studio-eclipse-4.3/rap"/>
     <child location="../../cs-studio-eclipse-4.3/efx"/>
     <child location="../../cs-studio-eclipse-4.3/orbit"/>
     <child location="../../cs-studio-eclipse-4.3/eclipse-updates"/>
-    <child location="../../cs-studio-eclipse-4.3/eclipse"/>
+    <child location="../../cs-studio-eclipse-4.3/eclipse"/> -->
   </children>
 </repository>
