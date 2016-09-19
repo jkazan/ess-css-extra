@@ -11,8 +11,10 @@ cd ..
 # or want to assert that you start over fresh,
 # delete the Maven repository:
 # rm -rf $HOME/.m2/repository
-rm -rf $HOME/.m2/repository/p2/osgi/org.csstudio.*
-rm -rf $HOME/.m2/repository/p2/osgi/org.diirt.*
+rm -rf $HOME/.m2/repository/.cache
+rm -rf $HOME/.m2/repository/.meta
+rm -rf $HOME/.m2/repository/p2/bundle/osgi/org.csstudio.*
+rm -rf $HOME/.m2/repository/p2/bundle/osgi/org.diirt.*
 rm -f ?_*.log
 
 # To reduce maven verbosity
@@ -36,12 +38,12 @@ echo "===="
 echo "===="
 echo "==== BUILDING cs-studio/core"
 echo "===="
-(cd cs-studio/core; time -B clean clean verify) | tee 3_cs-studio-core.log
+(cd cs-studio/core; time mvn -B clean clean verify) | tee 3_cs-studio-core.log
 
 echo "===="
 echo "==== BUILDING cs-studio/applications"
 echo "===="
-(cd cs-studio/applications; time -B clean clean verify) | tee 4_cs-studio-applications.log
+(cd cs-studio/applications; time mvn -B clean clean verify) | tee 4_cs-studio-applications.log
 
 echo "===="
 echo "==== BUILDING cs-studio/applications"
