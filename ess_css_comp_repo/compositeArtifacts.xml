@@ -16,7 +16,7 @@
     <child location="../../cs-studio-thirdparty/repository/target/repository"/>
     <child location="../../maven-osgi-bundles/repository/target/repository"/>
     <child location="http://download.controlsystemstudio.org/issue/1818"/>
-    <child location="../../cs-studio-eclipse-4.3/p2repo"/>
-    <child location="../../cs-studio-4.4/p2repo"/>
+    <child location="../../../CS-Studio-Libraries/cs-studio-eclipse-4.3/p2repo"/>
+    <child location="../../../CS-Studio-Libraries/cs-studio-4.4/p2repo"/>
   </children>
 </repository>
