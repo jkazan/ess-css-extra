@@ -2,7 +2,7 @@
 <settings>
 
   <localRepository>
-    /tmp/Original-CS-Studio/.m2
+    /home/jenkins/workspace/Original-CS-Studio/.m2
   </localRepository>
 
   <profiles>
@@ -16,7 +16,7 @@
              local repositories.
            -->
            <!-- Path to your composite repo -->
-           <csstudio.composite.repo>/tmp/Original-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
+           <csstudio.composite.repo>/home/jenkins/workspace/Original-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
 
         <!-- By default, even if you use a composite repo
              that lists local P2 sites,
@@ -28,8 +28,9 @@
              http://download.controlsystemstudio.org,
              you can list them in your composite repo.
            -->
-           <cs-studio>dummy_value</cs-studio>
-           
+           <cs-studio>false</cs-studio>
+           <eclipse>false</eclipse>
+
         <!-- Ignore artifacts in ~/.m2/repository/p2,
              which some other "mvn install" may have placed
              there.
@@ -42,11 +43,11 @@
 
            <!-- Don't use embedded compiler -->
            <!-- <maven.compiler.fork>true</maven.compiler.fork> -->
-           
+
            <!-- Skip unit tests -->
-           <maven.test.skip>true</maven.test.skip>
-           <skipTests>true</skipTests>
-           
+           <maven.test.skip>false</maven.test.skip>
+           <skipTests>false</skipTests>
+
          </properties>
        </profile>
      </profiles>
@@ -55,7 +56,7 @@
      <activeProfiles>
       <activeProfile>ess-css-settings</activeProfile>
     </activeProfiles>
-    
+
     <servers>
       <server>
         <id>central</id>
