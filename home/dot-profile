@@ -1,3 +1,19 @@
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents/Home
+#
+# EPICS
+#
+export EPICS_HOST_ARCH=darwin-x86
+export EPICS_BASE="${HOME}/Projects/EPICS/base"
+export EPICS_MBA_BASE="${HOME}/Projects/EPICS/base"
+export EPICS_EXTENSIONS="${HOME}/Projects/EPICS/extensions"
+export EPICS_MODULES="${HOME}/Projects/EPICS/modules"
+
+export PATH=${EPICS_BASE}/bin/${EPICS_HOST_ARCH}:${EPICS_EXTENSIONS}/bin/${EPICS_HOST_ARCH}:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export LD_LIBRARY_PATH=${EPICS_BASE}/lib/${EPICS_HOST_ARCH}:${EPICS_EXTENSIONS}/lib/${EPICS_HOST_ARCH}:
+
+#
+# TOOLS
+#
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home
 export PATH=/Applications/apache-maven-3.3.9/bin:$PATH
 export MAVEN_OPTS='-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit'
+
