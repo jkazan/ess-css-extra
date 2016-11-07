@@ -13,7 +13,8 @@ export LD_LIBRARY_PATH=${EPICS_BASE}/lib/${EPICS_HOST_ARCH}:${EPICS_EXTENSIONS}/
 #
 # TOOLS
 #
+export ANT_HOME='/Applications/NetBeans/NetBeans 8.2.app/Contents/Resources/NetBeans/extide/ant'
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home
-export PATH=/Applications/apache-maven-3.3.9/bin:$PATH
+export PATH=/Applications/apache-maven-3.3.9/bin:$ANT_HOME/bin:$PATH
 export MAVEN_OPTS='-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit'
 
