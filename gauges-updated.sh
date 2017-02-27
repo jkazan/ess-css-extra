@@ -20,17 +20,17 @@ rm -f ?_*.log
 # MVNOPT="-P !cs-studio-sites,!eclipse-sites -B -DlocalArtifacts=ignore"
 MVNOPT="-B -P ess-css-settings"
 
-echo ""
-echo "===="
-echo "==== BUILDING maven-osgi-bundles"
-echo "===="
-(cd maven-osgi-bundles; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 0_maven-osgi-bundles.log
-
 # echo ""
 # echo "===="
-# echo "==== BUILDING cs-studio-thirdparty"
+# echo "==== BUILDING maven-osgi-bundles"
 # echo "===="
-# (cd cs-studio-thirdparty; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 1_cs-studio-thirdparty.log
+# (cd maven-osgi-bundles; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 0_maven-osgi-bundles.log
+
+echo ""
+echo "===="
+echo "==== BUILDING cs-studio-thirdparty"
+echo "===="
+(cd cs-studio-thirdparty; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 1_cs-studio-thirdparty.log
 
 # echo ""
 # echo "===="
