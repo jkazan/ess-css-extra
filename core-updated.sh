@@ -20,11 +20,11 @@ rm -f ?_*.log
 # MVNOPT="-P !cs-studio-sites,!eclipse-sites -B -DlocalArtifacts=ignore"
 MVNOPT="-B -P ess-css-settings"
 
-echo ""
-echo "===="
-echo "==== BUILDING maven-osgi-bundles"
-echo "===="
-(cd maven-osgi-bundles; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 0_maven-osgi-bundles.log
+# echo ""
+# echo "===="
+# echo "==== BUILDING maven-osgi-bundles"
+# echo "===="
+# (cd maven-osgi-bundles; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 0_maven-osgi-bundles.log
 
 # echo ""
 # echo "===="
@@ -38,11 +38,11 @@ echo "===="
 # echo "===="
 # (cd diirt; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 2_diirt.log
 
-# echo ""
-# echo "===="
-# echo "==== BUILDING cs-studio/core"
-# echo "===="
-# (cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings-no-tests.xml clean clean verify) | tee 3_cs-studio-core.log
+echo ""
+echo "===="
+echo "==== BUILDING cs-studio/core"
+echo "===="
+(cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings-no-tests.xml clean clean verify) | tee 3_cs-studio-core.log
 
 # echo ""
 # echo "===="
@@ -56,11 +56,11 @@ echo "==== BUILDING org.csstudio.display.builder"
 echo "===="
 (cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml -Dcss-repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo -Declipse-site=http://download.eclipse.org/releases/mars clean verify) | tee 5_org.csstudio.display.builder.log
 
-# echo ""
-# echo "===="
-# echo "==== BUILDING org.csstudio.product"
-# echo "===="
-# (cd org.csstudio.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 6_org.csstudio.product.log
+echo ""
+echo "===="
+echo "==== BUILDING org.csstudio.product"
+echo "===="
+(cd org.csstudio.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 6_org.csstudio.product.log
 
 echo ""
 echo "===="
