@@ -18,7 +18,7 @@ rm -f ?_*.log
 # To reduce maven verbosity
 # MAVEN_OPTS = $MAVEN_OPTS -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 # MVNOPT="-P !cs-studio-sites,!eclipse-sites -B -DlocalArtifacts=ignore"
-MVNOPT="-B -P ess-css-settings"
+MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
 
 echo ""
 echo "===="
@@ -42,13 +42,13 @@ echo ""
 echo "===="
 echo "==== BUILDING cs-studio/core"
 echo "===="
-(cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings-no-tests.xml clean clean verify) | tee 3_cs-studio-core.log
+(cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 3_cs-studio-core.log
 
 echo ""
 echo "===="
 echo "==== BUILDING cs-studio/applications"
 echo "===="
-(cd cs-studio/applications; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings-no-tests.xml clean clean verify) | tee 4_cs-studio-applications.log
+(cd cs-studio/applications; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings-no-tests.xml clean verify) | tee 4_cs-studio-applications.log
 
 echo ""
 echo "===="
