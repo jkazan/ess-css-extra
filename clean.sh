@@ -22,39 +22,9 @@ MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,e
 
 echo ""
 echo "===="
-echo "==== BUILDING maven-osgi-bundles"
+echo "==== BUILDING org.csstudio.ess.product"
 echo "===="
-(cd maven-osgi-bundles; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean) | tee 0_maven-osgi-bundles.log
-
-echo ""
-echo "===="
-echo "==== BUILDING cs-studio-thirdparty"
-echo "===="
-(cd cs-studio-thirdparty; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean) | tee 1_cs-studio-thirdparty.log
-
-echo ""
-echo "===="
-echo "==== BUILDING diirt"
-echo "===="
-(cd diirt; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean) | tee 2_diirt.log
-
-echo ""
-echo "===="
-echo "==== BUILDING cs-studio/core"
-echo "===="
-(cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean) | tee 3_cs-studio-core.log
-
-echo ""
-echo "===="
-echo "==== BUILDING cs-studio/applications"
-echo "===="
-(cd cs-studio/applications; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean) | tee 4_cs-studio-applications.log
-
-echo ""
-echo "===="
-echo "==== BUILDING org.csstudio.display.builder"
-echo "===="
-(cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss-repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo -Declipse-site=http://download.eclipse.org/releases/mars clean) | tee 5_org.csstudio.display.builder.log
+(cd org.csstudio.ess.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean) | tee 7_org.csstudio.ess.product.log
 
 echo ""
 echo "===="
@@ -64,9 +34,39 @@ echo "===="
 
 echo ""
 echo "===="
-echo "==== BUILDING org.csstudio.ess.product"
+echo "==== BUILDING org.csstudio.display.builder"
 echo "===="
-(cd org.csstudio.ess.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean) | tee 7_org.csstudio.ess.product.log
+(cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss-repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean) | tee 5_org.csstudio.display.builder.log
+
+echo ""
+echo "===="
+echo "==== BUILDING cs-studio/applications"
+echo "===="
+(cd cs-studio/applications; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean) | tee 4_cs-studio-applications.log
+
+echo ""
+echo "===="
+echo "==== BUILDING cs-studio/core"
+echo "===="
+(cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean) | tee 3_cs-studio-core.log
+
+echo ""
+echo "===="
+echo "==== BUILDING diirt"
+echo "===="
+(cd diirt; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean) | tee 2_diirt.log
+
+echo ""
+echo "===="
+echo "==== BUILDING cs-studio-thirdparty"
+echo "===="
+(cd cs-studio-thirdparty; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean) | tee 1_cs-studio-thirdparty.log
+
+echo ""
+echo "===="
+echo "==== BUILDING maven-osgi-bundles"
+echo "===="
+(cd maven-osgi-bundles; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean) | tee 0_maven-osgi-bundles.log
 
 echo ""
 tail ?_*.log
