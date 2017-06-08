@@ -54,7 +54,7 @@ echo ""
 echo "===="
 echo "==== BUILDING org.csstudio.display.builder"
 echo "===="
-(cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss-repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee 5_org.csstudio.display.builder.log
+(cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee 5_org.csstudio.display.builder.log
 
 echo ""
 echo "===="
