@@ -1,0 +1,162 @@
+#!groovy​
+pipeline {
+  /*
+   * Environment sets up a map containing key : value pairs
+   * The variables will be exported to the shell jenkins uses to execute in.
+   * You can access these variables along with ones passed from the injector
+   * plugin by calling ${env.<variableName>}
+   */
+  environment {
+    MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit"
+    MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
+  }
+  /*
+   * Agent sets up which environment that the pipeline will execute inside.
+   * Can be specified to label of certain slave or spin up a docker container
+   * Can be applied to each stage separately or here to set for all stages.
+   */
+  agent {
+    label 'css'
+  }
+  /*
+   * build specific options, the same as the checkboxes for the jobs inside jenkins
+   */
+  options {
+    disableConcurrentBuilds() //Disallow concurrent executions of the Pipeline
+    timeout(time:2, unit: 'HOURS') //Set a timeout period for the Pipeline run, after which Jenkins should abort the Pipeline
+    retry(2)
+    timestamps()
+    skipDefaultCheckout()
+  }
+  /*
+   * Stages Are as a checkpoint and the steps ran will show up in the jenkins ui.
+   * The execution time for each stage will be monitored and all calls can be
+   * overviewed from the jenkins ui
+   *
+   */
+  stages {
+    /*
+     * The individual stage has to have it's name defined
+     */
+    stage('workspace-prep 00000'){
+         /*
+          * Inside the steps block is where all the calls which makes up the pipeline gets called.
+          * Look up jenkins step-library for help on each individual step.
+          */
+         steps{
+           echo "sourceRepo = ${env.sourceRepo} \nXMLfile = ${env.XMLfile}, make sure it's the correct file with updated paths"
+           echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
+           echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
+           echo "project will be built in to ${env.WORKSPACE}/${env.buildSpace}"
+           echo "path to workspace: ${env.WORKSPACE}"
+           sh "export"
+           pwd()
+           dir("../${buildSpace}"){
+             deleteDir() // rm -rf *
+           }
+         }
+    }
+    stage('clone css-extra 00100'){
+       steps {
+       //creates a new directory, {workspace}/<dirName>, everything inside this block will be run with the new folder as root
+          dir("../${buildSpace}/ess-css-extra"){
+            git(url: 'https://github.com/fjubben/ess-css-extra', branch: 'jespertest') // checks out the repo in current folder (does not clone in to subfolder), specify branch
+          }
+       }
+     }
+     stage('maven-osgi-bundles 00200'){
+         steps {
+           dir("../${buildSpace}/maven-osgi-bundles"){
+              git(url: "${sourceRepo}/maven-osgi-bundles.git", branch: "${repoBranch}")
+              sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+          }
+        }
+     }
+     stage('CS-Studio CE 00300 - cs-studio-thirdparty'){
+         steps{
+           dir("../${buildSpace}/cs-studio-thirdparty"){
+              git(url: "${sourceRepo}/cs-studio-thirdparty.git", branch: "${repoBranch}")
+              sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+            }
+        }
+     }
+     stage('CS-Studio CE 00400 - diirt'){
+        steps{
+            dir("../${buildSpace}/diirt"){
+            git(url: "${sourceRepo}/diirt", branch: "${repoBranch}")
+            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+          }
+        }
+     }
+     stage('CS-Studio CE 00500 - cs-studio'){
+      steps{
+          dir("../${buildSpace}/cs-studio"){
+            git(url: "${sourceRepo}/cs-studio", branch: "${repoBranch}")
+            dir("core"){
+              sh "mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/${env.XMLfile} clean verify"
+            }
+            dir("applications"){
+              sh "mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/${env.XMLfile} clean verify"
+            }
+          }
+        }
+     }
+     stage('CS-Studio CE 00550 - org.csstudio.display.builder'){
+        steps{
+          dir("../${buildSpace}/org.csstudio.display.builder"){
+            git(url: 'https://github.com/kasemir/org.csstudio.display.builder.git', branch: "${repoBranch}")
+            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} -Dcss_repo=file:${env.WORKSPACE}/../${env.buildSpace}/ess-css-extra/ess_css_comp_repo clean verify"
+          }
+        }
+     }
+     stage('CS-Studio CE 00600 - org.csstudio.product'){
+        steps{
+          dir("../${buildSpace}/org.csstudio.product"){
+            git(url: "${sourceRepo}/org.csstudio.product.git", branch: "${repoBranch}")
+            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+          }
+        }
+     }
+     stage('CS-Studio CE 00700 - org.csstudio.ess.product'){
+        steps{
+          dir("../${buildSpace}/org.csstudio.ess.product"){
+            git(url: "${sourceRepo}/org.csstudio.ess.product.git", branch: "${repoBranch}")
+            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+          }
+        }
+     }
+    stage ('Ship artifact - optional') {
+      when {
+        environment name: 'pushArtifact', value: 'true'
+      }
+      steps{
+      dir("../${buildSpace}")
+      script { //artifactory plugin doesn't fully support declarative pipeline there for the scrip-block is needed
+           def server = Artifactory.server "${env.serverID}"
+           def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/../${env.buildSpace}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
+           def uploadSpec = """{
+             "files": [
+               {
+                 "pattern": "org.csstudio.ess.product/repository/target/products/*.tar.gz",
+                 "target": "CSSTest/${artifactFolder}/${versionNBR}/"
+               },
+               {
+                 "pattern": "org.csstudio.ess.product/repository/target/products/*.zip",
+                 "target": "CSSTest/${artifactFolder}/${versionNBR}/"
+               }
+             ]
+           }"""
+           server.upload(uploadSpec)
+        }
+      }
+    }
+    stage('clean up'){
+      steps{
+      dir("../${buildSpace}"){
+        deleteDir()
+      }
+      deleteDir()
+      }
+    }
+  }
+}
