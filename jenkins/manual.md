@@ -46,7 +46,7 @@ email=false
 ### ess-css-development
 
 ```
-sourceRepo=https://github.com/ControlSystemStudio
+sourceRepo=https://github.com/ESSICS
 repoBranch=master
 buildSpace=cs-studios
 xmlFile=settings-for-jenkins.xml
@@ -59,7 +59,7 @@ email=false
 ### ess-css-production
 
 ```
-sourceRepo=https://github.com/ControlSystemStudio
+sourceRepo=https://github.com/ESSICS
 repoBranch=production
 buildSpace=cs-studio
 xmlFile=settings-for-jenkins.xml
