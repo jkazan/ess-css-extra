@@ -44,8 +44,8 @@
 
            <!-- Skip unit tests -->
            <!-- TODO: JO: change back to false for real jenkins -->
-           <maven.test.skip>true</maven.test.skip>
-           <skipTests>true</skipTests>
+           <maven.test.skip>false</maven.test.skip>
+           <skipTests>false</skipTests>
 
          </properties>
        </profile>

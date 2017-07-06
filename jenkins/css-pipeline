@@ -60,7 +60,7 @@ pipeline {
        steps {
        //creates a new directory, {workspace}/<dirName>, everything inside this block will be run with the new folder as root
           dir("../${buildSpace}/ess-css-extra"){
-            git(url: 'https://github.com/fjubben/ess-css-extra', branch: 'jespertest') // checks out the repo in current folder (does not clone in to subfolder), specify branch
+            git(url: 'https://github.com/ESSICS/ess-css-extra', branch: "${repoBranch}")
           }
        }
      }
