@@ -23,14 +23,17 @@ email=false // if true then will require [name] as well
 ## Default environments
 
 ### CSS-CE
+```
 sourceRepo=https://github.com/ControlSystemStudio
 repoBranch=master
 buildSpace=css-ce
 xmlFile=settings-for-jenkins-ce.xml
 pushArtifact=false
 email=false
+```
 
 ### ess-css-development
+```
 sourceRepo=https://github.com/ControlSystemStudio
 repoBranch=master
 buildSpace=cs-studios
@@ -39,8 +42,10 @@ pushArtifact=true
 serverID=artifactory-ess
 artifactFolder=development
 email=false
+```
 
 ### ess-css-production
+```
 sourceRepo=https://github.com/ControlSystemStudio
 repoBranch=production
 buildSpace=cs-studio
@@ -49,6 +54,7 @@ pushArtifact=true
 serverID=artifactory-ess
 artifactFolder=production
 email=false
+```
 ---
 ## Adding slack integration
 1. download slack notification plugin for jenkins
