@@ -1,5 +1,6 @@
 #!groovy​
 pipeline {
+
   /*
    * Environment sets up a map containing key : value pairs
    * The variables will be exported to the shell jenkins uses to execute in.
@@ -10,6 +11,7 @@ pipeline {
     MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit"
     MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
   }
+
   /*
    * Agent sets up which environment that the pipeline will execute inside.
    * Can be specified to label of certain slave or spin up a docker container
@@ -18,16 +20,18 @@ pipeline {
   agent {
     label 'css'
   }
+
   /*
    * build specific options, the same as the checkboxes for the jobs inside jenkins
    */
   options {
-    disableConcurrentBuilds() //Disallow concurrent executions of the Pipeline
-    timeout(time:2, unit: 'HOURS') //Set a timeout period for the Pipeline run, after which Jenkins should abort the Pipeline
+    disableConcurrentBuilds()       //Disallow concurrent executions of the Pipeline
+    timeout(time:2, unit: 'HOURS')  //Set a timeout period for the Pipeline run, after which Jenkins should abort the Pipeline
     retry(2)
     timestamps()
     skipDefaultCheckout()
   }
+
   /*
    * Stages Are as a checkpoint and the steps ran will show up in the jenkins ui.
    * The execution time for each stage will be monitored and all calls can be
@@ -35,43 +39,47 @@ pipeline {
    *
    */
   stages {
+
     /*
-     * The individual stage has to have it's name defined
+     * Print out environment variables and make sure a clean working space is setup.
      */
     stage('workspace-prep 00000'){
-         /*
-          * Inside the steps block is where all the calls which makes up the pipeline gets called.
-          * Look up jenkins step-library for help on each individual step.
-          */
-         steps{
-           echo "sourceRepo = ${env.sourceRepo} \nXMLfile = ${env.XMLfile}, make sure it's the correct file with updated paths"
-           echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
-           echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
-           echo "project will be built in to ${env.WORKSPACE}/${env.buildSpace}"
-           echo "path to workspace: ${env.WORKSPACE}"
-           sh "export"
-           pwd()
-           dir("../${buildSpace}"){
-             deleteDir() // rm -rf *
-           }
-         }
-    }
-    stage('clone css-extra 00100'){
-       steps {
-       //creates a new directory, {workspace}/<dirName>, everything inside this block will be run with the new folder as root
-          dir("../${buildSpace}/ess-css-extra"){
-            git(url: 'https://github.com/ESSICS/ess-css-extra', branch: "${repoBranch}")
-          }
-       }
-     }
-     stage('maven-osgi-bundles 00200'){
-         steps {
-           dir("../${buildSpace}/maven-osgi-bundles"){
-              git(url: "${sourceRepo}/maven-osgi-bundles.git", branch: "${repoBranch}")
-              sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
-          }
+      steps{
+        echo "sourceRepo = ${env.sourceRepo} \nXMLfile = ${env.XMLfile}, make sure it's the correct file with updated paths"
+        echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
+        echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
+        echo "project will be built in to ${env.WORKSPACE}/${env.buildSpace}"
+        echo "path to workspace: ${env.WORKSPACE}"
+        sh "export"
+        pwd()
+        dir("../${buildSpace}"){
+          deleteDir() // rm -rf *
         }
-     }
+      }
+    }
+
+    /*
+     * Getting the "css-extra" project, containing ESS-specific building files.
+     */
+    stage('clone css-extra 00100'){
+      steps {
+        dir("../${buildSpace}/ess-XXX-css-extra.git"){
+          git(url: 'https://github.com/ESSICS/ess-css-extra', branch: "${repoBranch}")
+        }
+      }
+    }
+
+    /*
+     * Getting and building the "maven-osgi-bundles" project.
+     */
+    stage('maven-osgi-bundles 00200'){
+      steps {
+        dir("../${buildSpace}/maven-osgi-bundles"){
+          git(url: "${sourceRepo}/maven-osgi-bundles.git", branch: "${repoBranch}")
+          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+        }
+      }
+    }
      stage('CS-Studio CE 00300 - cs-studio-thirdparty'){
          steps{
            dir("../${buildSpace}/cs-studio-thirdparty"){
@@ -159,4 +167,20 @@ pipeline {
       }
     }
   }
+
+  post {
+
+    failure {
+      mail
+             to: "${email}"
+        subject: "${env.JOB_BASE_NAME} failed to build"
+           body: "${env.JOB_BASE_NAME} failed to build.\nDirect job link: ${env.RUN_DISPLAY_URL}"
+    }
+
+    success {
+
+    }
+
+  }
+
 }
