@@ -63,7 +63,7 @@ pipeline {
      */
     stage('clone css-extra 00100'){
       steps {
-        dir("../${buildSpace}/ess-XXX-css-extra.git"){
+        dir("../${buildSpace}/ess-css-extra.git"){
           git(url: 'https://github.com/ESSICS/ess-css-extra', branch: "${repoBranch}")
         }
       }
