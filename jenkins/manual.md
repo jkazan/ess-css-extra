@@ -11,14 +11,15 @@ The project will be built inside a folder in the slave workspace with the folder
 ## Config for the pipeline
 For reusability, the script is reliant on parameters from the user. These parameters are to be inputted through configuring jenkins and require the plug in "environment injector". The option "Prepare an environment for the run" then gets available for the user. Variables can then be defined in the textfield "Properties Content".  
 
-example
+### Example
+```
 sourceRepo=https://github.com/ControlSystemStudio //the main repo you wish to fetch from
 repoBranch=master //which branch you wish to checkout
 buildSpace=css-ce //where you want the project to be built (make sure this path is in union with the xml file for maven)
 xmlFile=settings-for-jenkins-ce.xml //
 pushArtifact=false //if false then you don't need to worry about anything, if true you need to define [serverID, artifactFolder] as well
 email=false // if true then will require [name] as well
-
+```
 ---
 ## Default environments
 
