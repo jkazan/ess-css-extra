@@ -4,9 +4,7 @@ Folder containing all accessory files and folders necessary to compile and deplo
 This repository contains the _Composite P2 Repository_ files as described in [Control System Studio Guide](http://cs-studio.sourceforge.net/docbook/ch04.html#idp157632), needed to manually build the product using Maven.
 ## home/dot-profile
 This file contains the environment variables to be set and included into the ~/.profile file.
-## maven/settings.xml
-This is the Maven settings file that should be copied into ~/.m2 to configure Maven to use the composite P2 repository.
-## maven/settings-for-jenkins.xml
-This is a similar Maven settings file used by Jenkins job to configure Maven to use the composite P2 repository.
-## clean-and-build.sh
-This shell-script file will allow cleaning and rebuilding all the artifacts.
+## maven
+This folder contains various files to bu used by Maven during the build.
+## jenkins
+This folder contains the file used by Jenkins to run the various pipelines (see the [Manual](https://github.com/ESSICS/ess-css-extra/blob/master/jenkins/manual.md)).
