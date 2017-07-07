@@ -75,7 +75,7 @@ pipeline {
     stage('00200 - maven-osgi-bundles '){
       steps {
         dir("../${buildSpace}/maven-osgi-bundles"){
-          git(url: "${sourceRepo}/maven-osgi-bundles.git", branch: "${repoBranch}")
+          git(url: "${sourceRepo}/maven-XXX-osgi-bundles.git", branch: "${repoBranch}")
           sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
         }
       }
