@@ -5,16 +5,16 @@
     <profile>
       <id>ess-css-settings</id>
       <properties>
-        <!-- Optionally, configure a composite repo.
+          <!-- Optionally, configure a composite repo.
              By default, the Maven build will fetch all
              depenencies from remote repositories.
              In your composite repository, you can list
              local repositories.
            -->
            <!-- Path to your composite repo -->
+           <!-- <csstudio.composite.repo>/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo> -->
            <csstudio.composite.repo>/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
-
-        <!-- By default, even if you use a composite repo
+           <!-- By default, even if you use a composite repo
              that lists local P2 sites,
              Maven will still consult the remote CSS repos.
              Setting this property DISABLES downloads from
@@ -27,7 +27,7 @@
            <cs-studio>false</cs-studio>
            <eclipse>false</eclipse>
 
-        <!-- Ignore artifacts in ~/.m2/repository/p2,
+           <!-- Ignore artifacts in ~/.m2/repository/p2,
              which some other "mvn install" may have placed
              there.
            -->

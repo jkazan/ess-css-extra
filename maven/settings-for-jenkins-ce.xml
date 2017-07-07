@@ -1,10 +1,8 @@
 <!-- Maven settings.xml -->
 <settings>
-
   <localRepository>
-    /home/jenkins/workspace/Original-CS-Studio/.m2
+    /home/jenkins/workspace/css-ce/.m2
   </localRepository>
-
   <profiles>
     <profile>
       <id>ess-css-settings</id>
@@ -16,7 +14,7 @@
              local repositories.
            -->
            <!-- Path to your composite repo -->
-           <csstudio.composite.repo>/home/jenkins/workspace/Original-CS-Studio/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
+           <csstudio.composite.repo>/home/jenkins/workspace/css-ce/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
 
         <!-- By default, even if you use a composite repo
              that lists local P2 sites,
@@ -45,6 +43,7 @@
            <!-- <maven.compiler.fork>true</maven.compiler.fork> -->
 
            <!-- Skip unit tests -->
+           <!-- TODO: JO: change back to false for real jenkins -->
            <maven.test.skip>false</maven.test.skip>
            <skipTests>false</skipTests>
 
