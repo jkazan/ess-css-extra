@@ -75,7 +75,7 @@ pipeline {
     stage('00200 - maven-osgi-bundles '){
       steps {
         dir("../${buildSpace}/maven-osgi-bundles"){
-          git(url: "${sourceRepo}/maven-XXX-osgi-bundles.git", branch: "${repoBranch}")
+          git(url: "${sourceRepo}/maven-osgi-bundles.git", branch: "${repoBranch}")
           sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
         }
       }
@@ -211,8 +211,7 @@ pipeline {
   post {
 
     failure {
-      emailext to: "${email}", subject: "${env.JOB_BASE_NAME} failed to build", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}", attachLog: 'true'
-//      mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} failed to build", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
+      mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} failed to build", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
     }
 
     success {
