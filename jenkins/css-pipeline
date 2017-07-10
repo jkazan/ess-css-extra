@@ -27,7 +27,6 @@ pipeline {
   options {
     disableConcurrentBuilds()       //Disallow concurrent executions of the Pipeline
     timeout(time:2, unit: 'HOURS')  //Set a timeout period for the Pipeline run, after which Jenkins should abort the Pipeline
-    retry(2)
     timestamps()
     skipDefaultCheckout()
   }
@@ -129,7 +128,7 @@ pipeline {
     stage('00550 - org.csstudio.display.builder'){
       steps{
         dir("../${buildSpace}/org.csstudio.display.builder"){
-          git(url: 'https://github.com/kasemir/org.csstudio.display.builder.git', branch: "${repoBranch}")
+          git(url: "${env.builderRepo}", branch: "${repoBranch}")
           sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} -Dcss_repo=file:${env.WORKSPACE}/../${env.buildSpace}/ess-css-extra/ess_css_comp_repo clean verify"
         }
       }
@@ -172,7 +171,7 @@ pipeline {
       steps{
         dir("../${buildSpace}") {
           script {
-            def server = Artifactory.server "${env.serverID}"
+            def server = Artifactory.server "${env.artifacoryServerID}"
             def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/../${env.buildSpace}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
             def uploadSpec = """{
             "files": [
