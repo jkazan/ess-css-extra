@@ -63,7 +63,7 @@ pipeline {
     stage('00100 - clone css-extra'){
       steps {
         dir("../${buildFolder}/ess-css-extra"){
-          git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${repoBranch}")
+          git(url: 'https://github.com/fjubben/ess-css-extra.git', branch: "newtest")
           dir('maven'){
             sh "sed -i -e s/###replace###/${env.buildFolder}/g settings-for-jenkins-sed.xml"
           }
