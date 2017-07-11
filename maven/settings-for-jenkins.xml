@@ -2,7 +2,7 @@
 <settings>
 
   <localRepository>
-    /home/jenkins/workspace/ess-css/.m2
+    /home/jenkins/workspace/###replace###/.m2
   </localRepository>
 
   <profiles>
@@ -16,7 +16,7 @@
              local repositories.
            -->
            <!-- Path to your composite repo -->
-           <csstudio.composite.repo>/home/jenkins/workspace/ess-css/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
+           <csstudio.composite.repo>/home/jenkins/workspace/###replace###/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
 
         <!-- By default, even if you use a composite repo
              that lists local P2 sites,

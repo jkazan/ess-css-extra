@@ -9,7 +9,7 @@ pipeline {
    */
   environment {
     MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit"
-    MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
+    MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites "
   }
 
   /*
@@ -27,7 +27,6 @@ pipeline {
   options {
     disableConcurrentBuilds()       //Disallow concurrent executions of the Pipeline
     timeout(time:2, unit: 'HOURS')  //Set a timeout period for the Pipeline run, after which Jenkins should abort the Pipeline
-    retry(2)
     timestamps()
     skipDefaultCheckout()
   }
@@ -45,14 +44,14 @@ pipeline {
      */
     stage('00000 - workspace-prep '){
       steps{
-        echo "sourceRepo = ${env.sourceRepo} \nXMLfile = ${env.XMLfile}, make sure it's the correct file with updated paths"
+        echo "csstudioRepo = ${env.csstudioRepo} \nXMLfile = ${env.XMLfile}, make sure it's the correct file with updated paths"
         echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
         echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
-        echo "project will be built in to ${env.WORKSPACE}/${env.buildSpace}"
+        echo "project will be built in to ${env.WORKSPACE}/${env.buildFolder}"
         echo "path to workspace: ${env.WORKSPACE}"
         sh "export"
         pwd()
-        dir("../${buildSpace}"){
+        dir("../${buildFolder}"){
           deleteDir() // rm -rf *
         }
       }
@@ -63,8 +62,12 @@ pipeline {
      */
     stage('00100 - clone css-extra'){
       steps {
-        dir("../${buildSpace}/ess-css-extra"){
-          git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${repoBranch}")
+        dir("../${buildFolder}/ess-css-extra"){
+          git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
+          dir('maven'){
+            sh "sed -i -e s/###replace###/${env.buildFolder}/g settings-for-jenkins.xml"
+            sh 'cat settings-for-jenkins.xml'
+          }
         }
       }
     }
@@ -74,9 +77,9 @@ pipeline {
      */
     stage('00200 - maven-osgi-bundles '){
       steps {
-        dir("../${buildSpace}/maven-osgi-bundles"){
-          git(url: "${sourceRepo}/maven-osgi-bundles.git", branch: "${repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+        dir("../${buildFolder}/maven-osgi-bundles"){
+          git(url: "${csstudioRepo}/maven-osgi-bundles.git", branch: "${env.repoBranch}")
+          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
     }
@@ -86,9 +89,9 @@ pipeline {
      */
     stage('00300 - cs-studio-thirdparty'){
       steps{
-        dir("../${buildSpace}/cs-studio-thirdparty"){
-          git(url: "${sourceRepo}/cs-studio-thirdparty.git", branch: "${repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+        dir("../${buildFolder}/cs-studio-thirdparty"){
+          git(url: "${csstudioRepo}/cs-studio-thirdparty.git", branch: "${env.repoBranch}")
+          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
     }
@@ -99,9 +102,9 @@ pipeline {
      */
     stage('00400 - diirt'){
       steps{
-        dir("../${buildSpace}/diirt"){
-          git(url: "${sourceRepo}/diirt", branch: "${repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+        dir("../${buildFolder}/diirt"){
+          git(url: "${csstudioRepo}/diirt", branch: "${env.repoBranch}")
+          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
     }
@@ -111,13 +114,13 @@ pipeline {
      */
     stage('00500 - cs-studio'){
       steps{
-        dir("../${buildSpace}/cs-studio"){
-          git(url: "${sourceRepo}/cs-studio", branch: "${repoBranch}")
+        dir("../${buildFolder}/cs-studio"){
+          git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
           dir("core"){
-            sh "mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/${env.XMLfile} clean verify"
+            sh "mvn ${env.MVNOPT} --settings  ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
           dir("applications"){
-            sh "mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/${env.XMLfile} clean verify"
+            sh "mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
         }
       }
@@ -128,9 +131,9 @@ pipeline {
      */
     stage('00550 - org.csstudio.display.builder'){
       steps{
-        dir("../${buildSpace}/org.csstudio.display.builder"){
-          git(url: 'https://github.com/kasemir/org.csstudio.display.builder.git', branch: "${repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} -Dcss_repo=file:${env.WORKSPACE}/../${env.buildSpace}/ess-css-extra/ess_css_comp_repo clean verify"
+        dir("../${buildFolder}/org.csstudio.display.builder"){
+          git(url: "${env.displayBuilderRepo}", branch: "${env.repoBranch}")
+          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/../${env.buildFolder}/ess-css-extra/ess_css_comp_repo clean verify"
         }
       }
     }
@@ -140,9 +143,9 @@ pipeline {
      */
     stage('00600 - org.csstudio.product'){
       steps{
-        dir("../${buildSpace}/org.csstudio.product"){
-          git(url: "${sourceRepo}/org.csstudio.product.git", branch: "${repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+        dir("../${buildFolder}/org.csstudio.product"){
+          git(url: "${csstudioRepo}/org.csstudio.product.git", branch: "${env.repoBranch}")
+          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
     }
@@ -152,9 +155,9 @@ pipeline {
      */
     stage('00700 - org.csstudio.ess.product'){
       steps{
-        dir("../${buildSpace}/org.csstudio.ess.product"){
-          git(url: "${sourceRepo}/org.csstudio.ess.product.git", branch: "${repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
+        dir("../${buildFolder}/org.csstudio.ess.product"){
+          git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
+          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
     }
@@ -167,22 +170,22 @@ pipeline {
      */
     stage ('00700 - Ship artifact - optional') {
       when {
-        environment name: 'pushArtifact', value: 'true'
+        environment name: 'useArtifactory', value: 'true'
       }
       steps{
-        dir("../${buildSpace}") {
+        dir("../${buildFolder}") {
           script {
-            def server = Artifactory.server "${env.serverID}"
-            def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/../${env.buildSpace}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
+            def server = Artifactory.server "${env.artifacoryServerID}"
+            def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/../${env.buildFolder}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
             def uploadSpec = """{
             "files": [
             {
               "pattern": "org.csstudio.ess.product/repository/target/products/*.tar.gz",
-              "target": "${artifactFolder}/${versionNBR}/"
+              "target": "${artifactoryFolder}/${versionNBR}/"
             },
             {
               "pattern": "org.csstudio.ess.product/repository/target/products/*.zip",
-              "target": "${artifactFolder}/${versionNBR}/"
+              "target": "${artifactoryFolder}/${versionNBR}/"
             }
             ]
             }"""
@@ -197,7 +200,7 @@ pipeline {
      */
     stage('00800 - clean up'){
       steps{
-        dir("../${buildSpace}"){
+        dir("../${buildFolder}"){
           deleteDir()
         }
         deleteDir()
