@@ -12,7 +12,7 @@ This file contains the environment variables to be set and included into the ~/.
 
 ## maven
 
-This folder contains various files to bu used by Maven during the build.
+This folder contains various files to be used by Maven during the build.
 
 ## jenkins
 
