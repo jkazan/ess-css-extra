@@ -8,65 +8,53 @@
 
 ---
 
-## Settings for maven use **absolute paths** and need to be corrected after the pipeline name
-
-The project will be built inside a folder in the slave workspace with the foldername set in the jenkins pipeline configuration. That means that if you change name or workspace you'll need to change it in the corresponding settings-file you link to.
-
----
-
 ## Config for the pipeline
 
-For reusability, the script is reliant on parameters from the user. These parameters are to be inputted through configuring jenkins and require the plug in "environment injector". The option "Prepare an environment for the run" then gets available for the user. Variables can then be defined in the textfield "Properties Content".  
+For reusability, the script is reliant on parameters from the user. These parameters are to be inputted through configuring jenkins and require the plug in "environment injector".
+The option **"Prepare an environment** for the run" then gets available for the user. Variables can then be defined in the textfield "Properties **Content"**.
 
-### Example
-
-```
-sourceRepo=https://github.com/ControlSystemStudio //the main repo you wish to fetch from
-repoBranch=master //which branch you wish to checkout
-buildSpace=css-ce //where you want the project to be built (make sure this path is in union with the xml file for maven)
-xmlFile=settings-for-jenkins-ce.xml //
-pushArtifact=false //if false then you don't need to worry about anything, if true you need to define [serverID, artifactFolder] as well
-email=false // if true then will require [name] as well
-```
----
 
 ## Default environments
 
 ### CSS-CE
 
 ```
-sourceRepo=https://github.com/ControlSystemStudio
+csstudioRepo=https://github.com/ControlSystemStudio
+displayBuilderRepo=https://github.com/kasemir/org.csstudio.display.builder
 repoBranch=master
-buildSpace=css-ce
-xmlFile=settings-for-jenkins-ce.xml
-pushArtifact=false
-email=false
+buildFolder=css-ce
+email=test@replace.se
+useArtifactory=false
+
 ```
 
 ### ess-css-development
 
 ```
-sourceRepo=https://github.com/ESSICS
+csstudioRepo=https://github.com/ESSICS
+displayBuilderRepo=https://github.com/kasemir/org.csstudio.display.builder
 repoBranch=master
-buildSpace=cs-studios
-xmlFile=settings-for-jenkins.xml
-pushArtifact=true
-serverID=artifactory-ess
-artifactFolder=development
-email=false
+buildFolder=cs-studios
+email=test@replace.se
+useArtifactory=true
+artifactoryServerID=<replace>
+artifactoryFolder=development
+
 ```
 
 ### ess-css-production
 
 ```
-sourceRepo=https://github.com/ESSICS
+csstudioRepo=https://github.com/ESSICS
+displayBuilderRepo=https://github.com/ESSICS/org.csstudio.display.builder
 repoBranch=production
-buildSpace=cs-studio
+buildFolder=cs-studio
 xmlFile=settings-for-jenkins.xml
-pushArtifact=true
-serverID=artifactory-ess
-artifactFolder=production
-email=false
+email=test@replace.se
+useArtifactory=true
+artifactoryServerID=<replace>
+artifactoryFolder=production
+
 ```
 
 ---
