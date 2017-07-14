@@ -67,7 +67,7 @@ pipeline {
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
           }
           pwd()
-          sh "pwd"
+          sh script: "pwd", returnStdout: 'true' 
           sh "sed -i -e s/###replace###/${env.buildFolder}/g ../${env.buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml"
         }
       }
