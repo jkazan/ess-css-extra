@@ -19,7 +19,7 @@ pipeline {
    */
   agent {
     docker {
-      image 'oracle-jdk-maven'
+      image 'europeanspallationsource/oracle-jdk-maven'
       label 'css'
     }
   }
