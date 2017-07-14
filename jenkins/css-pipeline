@@ -47,14 +47,14 @@ pipeline {
      */
     stage('00000 - workspace-prep '){
       steps{
-        echo "csstudioRepo = ${env.csstudioRepo} \nXMLfile = ${env.XMLfile}, make sure it's the correct file with updated paths"
+        echo "csstudioRepo = ${env.csstudioRepo}"
         echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
         echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
         echo "project will be built in to ${env.WORKSPACE}/${env.buildFolder}"
         echo "path to workspace: ${env.WORKSPACE}"
-        sh "export"
         pwd()
         dir("../${buildFolder}"){
+          pwd()
           deleteDir() // rm -rf *
         }
       }
