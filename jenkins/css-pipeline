@@ -8,7 +8,7 @@ pipeline {
    * plugin by calling ${env.<variableName>}
    */
   environment {
-    MAVEN_OPTS='''-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit'''
+    MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX\:-UseGCOverheadLimit'
     MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
   }
 
