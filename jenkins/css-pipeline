@@ -65,9 +65,7 @@ pipeline {
      */
     stage('00100 - clone css-extra'){
       steps {
-        dir("../${buildFolder}/ess-css-extra"){
-          git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${repoBranch}")
-        }
+        git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${repoBranch}")
       }
     }
 
@@ -77,10 +75,7 @@ pipeline {
     stage('00200 - maven-osgi-bundles '){
       steps {
         git(url: "${csstudioRepo}/maven-osgi-bundles.git", branch: "${repoBranch}")
-        dir("../${buildFolder}/maven-osgi-bundles"){
-          //git(url: "${csstudioRepo}/maven-osgi-bundles.git", branch: "${repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"
-        }
+        sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/${env.XMLfile} clean verify"  
       }
     }
 
