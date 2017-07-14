@@ -52,7 +52,7 @@ pipeline {
           echo "project will be built in to ${env.WORKSPACE}/${env.buildFolder}"
           echo "path to workspace: ${env.WORKSPACE}"
           pwd()
-          dir("../${buildFolder}"){
+          dir("../${env.buildFolder}"){
             deleteDir() // rm -rf *
           }
         }
@@ -63,10 +63,10 @@ pipeline {
        */
       stage('00100 - clone css-extra'){
         steps {
-          dir("../${buildFolder}/ess-css-extra"){
+          dir("../${env.buildFolder}/ess-css-extra"){
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
           }
-          sh "ls ../${buildFolder}/ess-css-extra/"
+          sh "ls ../${env.buildFolder}/ess-css-extra/"
           sh "sed -i -e s/###replace###/${env.buildFolder}/g ../${buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml"
         }
       }
@@ -76,10 +76,10 @@ pipeline {
        */
       stage('00200 - maven-osgi-bundles '){
         steps {
-          dir("../${buildFolder}/maven-osgi-bundles"){
-            git(url: "${csstudioRepo}/maven-osgi-bundles.git", branch: "${env.repoBranch}")
+          dir("../${env.buildFolder}/maven-osgi-bundles"){
+            git(url: "${env.csstudioRepo}/maven-osgi-bundles.git", branch: "${env.repoBranch}")
           }
-          sh "mvn ${env.MVNOPT} --settings ../${buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+          sh "mvn ${env.MVNOPT} --settings ../${env.buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
 
@@ -88,8 +88,8 @@ pipeline {
        */
       stage('00300 - cs-studio-thirdparty'){
         steps{
-          dir("../${buildFolder}/cs-studio-thirdparty"){
-            git(url: "${csstudioRepo}/cs-studio-thirdparty.git", branch: "${env.repoBranch}")
+          dir("../${env.buildFolder}/cs-studio-thirdparty"){
+            git(url: "${env.csstudioRepo}/cs-studio-thirdparty.git", branch: "${env.repoBranch}")
             sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
         }
