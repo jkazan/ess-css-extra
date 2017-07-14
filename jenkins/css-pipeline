@@ -65,8 +65,8 @@ pipeline {
         steps {
           dir("../${buildFolder}/ess-css-extra"){
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
-            sh "sed -i -e s/###replace###/${env.buildFolder}/g ../$buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml"      
           }
+          sh "sed -i -e s/###replace###/${env.buildFolder}/g ../$buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml"
         }
       }
 
@@ -77,8 +77,8 @@ pipeline {
         steps {
           dir("../${buildFolder}/maven-osgi-bundles"){
             git(url: "${csstudioRepo}/maven-osgi-bundles.git", branch: "${env.repoBranch}")
-            sh "mvn ${env.MVNOPT} --settings ../${buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
+          sh "mvn ${env.MVNOPT} --settings ../${buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
 
