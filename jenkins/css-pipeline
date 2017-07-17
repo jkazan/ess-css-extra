@@ -51,7 +51,7 @@ pipeline {
           echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
           echo "project will be built in to ${env.WORKSPACE}/../${env.buildFolder}"
           echo "path to workspace: ${env.WORKSPACE}"
-          sh 'export'
+          sh "export"
 
           dir("../${env.buildFolder}"){
             deleteDir() // rm -rf *
