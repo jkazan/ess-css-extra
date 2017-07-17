@@ -80,7 +80,7 @@ pipeline {
           dir("../${env.buildFolder}/maven-osgi-bundles"){
             git(url: "${env.csstudioRepo}/maven-osgi-bundles.git", branch: "${env.repoBranch}")
           }
-          sh "cd ../${env.buildFolder}/maven-osgi-bundels; mvn ${env.MVNOPT} --settings ../${env.buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+          sh "cd ../${env.buildFolder}/maven-osgi-bundles; mvn ${env.MVNOPT} --settings ../${env.buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
 
