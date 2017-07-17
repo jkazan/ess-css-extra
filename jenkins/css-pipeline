@@ -52,7 +52,7 @@ pipeline {
           echo "project will be built in to ${env.WORKSPACE}/../${env.buildFolder}"
           echo "path to workspace: ${env.WORKSPACE}"
           sh "export"
-          sh " which java | ls -las | ls -las"
+          sh "ls -las | ls -las | which java "
           dir("../${env.buildFolder}"){
               deleteDir() // rm -rf *
           }
