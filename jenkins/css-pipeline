@@ -53,7 +53,6 @@ pipeline {
           echo "project will be built in to ${env.WORKSPACE}/../${env.buildFolder}"
           echo "path to workspace: ${env.WORKSPACE}"
           sh "export"
-          sh "ls -las | ls -las | which java "
           dir("../${env.buildFolder}"){
               deleteDir() // rm -rf *
           }
@@ -67,8 +66,10 @@ pipeline {
         steps {
           dir("../${env.buildFolder}/ess-css-extra"){
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
+            sh 'pwd'
           }
           sh "sed -i -e s/###replace###/${env.buildFolder}/g ../${env.buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml"
+          sh "cat ../${env.buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml"
         }
       }
 
@@ -91,8 +92,8 @@ pipeline {
         steps{
           dir("../${env.buildFolder}/cs-studio-thirdparty"){
             git(url: "${env.csstudioRepo}/cs-studio-thirdparty.git", branch: "${env.repoBranch}")
-            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
+            sh "(cd ../${env.buildFolder}/cs-studio-thirdparty; mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify)"
         }
       }
 
@@ -104,8 +105,8 @@ pipeline {
         steps{
           dir("../${buildFolder}/diirt"){
             git(url: "${csstudioRepo}/diirt", branch: "${env.repoBranch}")
-            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
+          sh "(cd ../${env.buildFolder}/diirt; mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify)"
         }
       }
 
@@ -116,13 +117,11 @@ pipeline {
         steps{
           dir("../${buildFolder}/cs-studio"){
             git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
-            dir("core"){
-              sh "mvn ${env.MVNOPT} --settings  ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
-            }
             dir("applications"){
-              sh "mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
             }
           }
+          sh "(cd ../${env.buildFolder}/cd-studio/core; mvn ${env.MVNOPT} --settings  ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify)"
+          sh "(cd ../${env.buildFolder}/cd-studio/applications; mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify)"
         }
       }
 
@@ -133,8 +132,8 @@ pipeline {
         steps{
           dir("../${buildFolder}/org.csstudio.display.builder"){
             git(url: "${env.displayBuilderRepo}", branch: "${env.repoBranch}")
-            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/../${env.buildFolder}/ess-css-extra/ess_css_comp_repo clean verify"
           }
+          sh "(cd ../${env.buildFolder}/org.csstudio.display.builder; mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/../${env.buildFolder}/ess-css-extra/ess_css_comp_repo clean verify"
         }
       }
 
@@ -145,8 +144,8 @@ pipeline {
         steps{
           dir("../${buildFolder}/org.csstudio.product"){
             git(url: "${csstudioRepo}/org.csstudio.product.git", branch: "${env.repoBranch}")
-            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
+          sh "(cd ../${env.buildFolder}/org.csstudio.product; mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
 
@@ -157,7 +156,7 @@ pipeline {
         steps{
           dir("../${buildFolder}/org.csstudio.ess.product"){
             git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
-            sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+            sh "(cd ../${env.buildFolder}/org.csstudio.ess.product; mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
         }
       }
