@@ -52,6 +52,9 @@ pipeline {
           echo "project will be built in to ${env.WORKSPACE}/../${env.buildFolder}"
           echo "path to workspace: ${env.WORKSPACE}"
           sh "export"
+          dir("../${env.buildFolder}"){
+              deleteDir() // rm -rf *
+          }
         }
       }
 
@@ -62,7 +65,7 @@ pipeline {
         steps {
           dir("../${env.buildFolder}/ess-css-extra"){
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
-          }docker-compose
+          }
           sh "sed -i -e s/###replace###/${env.buildFolder}/g ../${env.buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml"
         }
       }
