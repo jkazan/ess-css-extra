@@ -52,9 +52,6 @@ pipeline {
           echo "project will be built in to ${env.WORKSPACE}/${env.buildFolder}"
           echo "path to workspace: ${env.WORKSPACE}"
           pwd()
-          dir("../${env.buildFolder}"){
-            deleteDir() // rm -rf *
-          }
         }
       }
 
