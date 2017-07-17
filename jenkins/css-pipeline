@@ -10,7 +10,7 @@ pipeline {
   environment {
     MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit"
     MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
-    JAVA_HOME="/usr/java/jdk1.8.0_131/"
+
   }
 
   /*
