@@ -65,6 +65,7 @@ pipeline {
           dir("ess-css-extra"){
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
           }
+          sh 'ls'
           sh "sed -i -e s/###replace###/${env.JOB_NAME}/g ess-css-extra/maven/settings-for-jenkins.xml"
           sh 'cat ess-css-extra/maven/settings-for-jenkins.xml'
         }
