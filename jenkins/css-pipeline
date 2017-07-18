@@ -70,7 +70,7 @@ pipeline {
           sh 'pwd'
           sh 'ls'
           sh 'ls ..'
-          sh "ls ../${env.buildFolder}/ess-css-extra"
+          sh "ls ../${env.buildFolder}"
 
           sh "sed -i -e s/###replace###/${env.buildFolder}/g ../${env.buildFolder}/ess-css-extra/maven/settings-for-jenkins.xml"
         }
