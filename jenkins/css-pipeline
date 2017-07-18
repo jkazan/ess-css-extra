@@ -64,7 +64,7 @@ pipeline {
        */
       stage('00100 - clone css-extra'){
         steps {
-        sh "mkdir ../${env.buildFolder}/ess-css-extra"
+        sh "mkdir ../${env.buildFolder}"
           dir("../${env.buildFolder}/ess-css-extra"){
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
           }
