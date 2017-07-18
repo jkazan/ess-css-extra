@@ -55,7 +55,6 @@ pipeline {
           echo "path to workspace: ${env.WORKSPACE}"
           sh "export"
           sh 'ls'
-          sh 'ls ess-css-extra'
         }
       }
 
