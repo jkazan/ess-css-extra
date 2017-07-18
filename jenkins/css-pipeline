@@ -52,8 +52,8 @@ pipeline {
             git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
             dir('applications'){}
             dir('core'){}
-            sh 'ls'
           }
+          sh 'ls cs-studio'
           sh "cd cd-studio/core && mvn ${env.MVNOPT} --settings  ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           sh "cd cd-studio/applications && mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
