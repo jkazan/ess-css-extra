@@ -117,9 +117,8 @@ pipeline {
         steps{
           dir("cs-studio"){
             git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
-            mkdir 'applications'
-            mkdir 'core'
-
+            dir('applications'){}
+            dir('core'){}
           }
           sh "cd cd-studio/core && mvn ${env.MVNOPT} --settings  ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           sh "cd cd-studio/applications && mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
