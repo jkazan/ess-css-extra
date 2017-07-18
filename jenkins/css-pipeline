@@ -53,7 +53,7 @@ pipeline {
           echo "project will be built in to ${env.WORKSPACE}/"
           echo "path to workspace: ${env.WORKSPACE}"
           sh "export"
-          deleteDir() // rm -rf *
+          sh 'ls'
         }
       }
 
