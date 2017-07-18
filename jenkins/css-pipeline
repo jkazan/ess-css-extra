@@ -62,10 +62,11 @@ pipeline {
        */
       stage('00100 - clone css-extra'){
         steps {
-          dir("/ess-css-extra"){
+          dir("ess-css-extra"){
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
           }
-          sh "sed -i -e s/###replace###/${env.buildFolder}/g /ess-css-extra/maven/settings-for-jenkins.xml"
+          sh "sed -i -e s/###replace###/${env.JOB_NAME}/g ess-css-extra/maven/settings-for-jenkins.xml"
+          sh 'cat ess-css-extra/maven/settings-for-jenkins.xml'
         }
       }
 
@@ -86,7 +87,7 @@ pipeline {
        */
       stage('00300 - cs-studio-thirdparty'){
         steps{
-          dir("/cs-studio-thirdparty"){
+          dir("cs-studio-thirdparty"){
             git(url: "${env.csstudioRepo}/cs-studio-thirdparty.git", branch: "${env.repoBranch}")
           }
             sh "cd cs-studio-thirdparty && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
@@ -99,7 +100,7 @@ pipeline {
        */
       stage('00400 - diirt'){
         steps{
-          dir("../${buildFolder}/diirt"){
+          dir("diirt"){
             git(url: "${csstudioRepo}/diirt", branch: "${env.repoBranch}")
           }
           sh "cd diirt && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
@@ -111,7 +112,7 @@ pipeline {
        */
       stage('00500 - cs-studio'){
         steps{
-          dir("../${buildFolder}/cs-studio"){
+          dir("cs-studio"){
             git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
             dir("applications"){
             }
@@ -126,10 +127,10 @@ pipeline {
        */
       stage('00550 - org.csstudio.display.builder'){
         steps{
-          dir("../${buildFolder}/org.csstudio.display.builder"){
+          dir("org.csstudio.display.builder"){
             git(url: "${env.displayBuilderRepo}", branch: "${env.repoBranch}")
           }
-          sh "(d /org.csstudio.display.builder && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}//ess-css-extra/ess_css_comp_repo clean verify"
+          sh "(cd org.csstudio.display.builder && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/ess-css-extra/ess_css_comp_repo clean verify"
         }
       }
 
@@ -138,10 +139,10 @@ pipeline {
        */
       stage('00600 - org.csstudio.product'){
         steps{
-          dir("../${buildFolder}/org.csstudio.product"){
+          dir("org.csstudio.product"){
             git(url: "${csstudioRepo}/org.csstudio.product.git", branch: "${env.repoBranch}")
           }
-          sh "cd /org.csstudio.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+          sh "cd org.csstudio.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
 
@@ -150,9 +151,9 @@ pipeline {
        */
       stage('00700 - org.csstudio.ess.product'){
         steps{
-          dir("../${buildFolder}/org.csstudio.ess.product"){
+          dir("org.csstudio.ess.product"){
             git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
-            sh "(cd /org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+            sh "(cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
         }
       }
@@ -168,24 +169,22 @@ pipeline {
           environment name: 'useArtifactory', value: 'true'
         }
         steps{
-          dir("../${buildFolder}") {
-            script {
-              def server = Artifactory.server "${env.artifacoryServerID}"
-              def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
-              def uploadSpec = """{
-              "files": [
-              {
-                "pattern": "org.csstudio.ess.product/repository/target/products/*.tar.gz",
-                "target": "${artifactoryFolder}/${versionNBR}/"
-              },
-              {
-                "pattern": "org.csstudio.ess.product/repository/target/products/*.zip",
-                "target": "${artifactoryFolder}/${versionNBR}/"
-              }
-              ]
-              }"""
-              server.upload(uploadSpec)
+          script {
+            def server = Artifactory.server "${env.artifacoryServerID}"
+            def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
+            def uploadSpec = """{
+            "files": [
+            {
+              "pattern": "org.csstudio.ess.product/repository/target/products/*.tar.gz",
+              "target": "${artifactoryFolder}/${versionNBR}/"
+            },
+            {
+              "pattern": "org.csstudio.ess.product/repository/target/products/*.zip",
+              "target": "${artifactoryFolder}/${versionNBR}/"
             }
+            ]
+            }"""
+            server.upload(uploadSpec)
           }
         }
       }
@@ -195,9 +194,6 @@ pipeline {
        */
       stage('00800 - clean up'){
         steps{
-          dir("../${buildFolder}"){
-            deleteDir()
-          }
           deleteDir()
         }
       }
