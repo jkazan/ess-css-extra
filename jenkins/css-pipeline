@@ -24,6 +24,7 @@ pipeline {
         label 'css'
       }
     }
+
     /*
      * build specific options, the same as the checkboxes for the jobs inside jenkins
      */
@@ -116,8 +117,8 @@ pipeline {
         steps{
           dir("cs-studio"){
             git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
-            dir 'applications'
-            dir 'core'
+            mkdir 'applications'
+            mkdir 'core'
 
           }
           sh "cd cd-studio/core && mvn ${env.MVNOPT} --settings  ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
@@ -133,7 +134,7 @@ pipeline {
           dir("org.csstudio.display.builder"){
             git(url: "${env.displayBuilderRepo}", branch: "${env.repoBranch}")
           }
-          sh "(cd org.csstudio.display.builder && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/ess-css-extra/ess_css_comp_repo clean verify"
+          sh "cd org.csstudio.display.builder && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/ess-css-extra/ess_css_comp_repo clean verify"
         }
       }
 
@@ -156,7 +157,7 @@ pipeline {
         steps{
           dir("org.csstudio.ess.product"){
             git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
-            sh "(cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+            sh "cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
           }
         }
       }
@@ -192,20 +193,20 @@ pipeline {
         }
       }
 
-      /*
-       * Deletes all files created by the pipeline
-       */
-      stage('00800 - clean up'){
-        steps{
-          deleteDir()
-        }
-      }
+
+
     }
 
     /*
      * Notify developers by email depending on the status of the pipeline after the run.
      */
     post {
+    /*
+     * Deletes all files created by the pipeline
+     */
+      always {
+        deleteDir()
+      }
 
       failure {
         mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} failed to build", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
