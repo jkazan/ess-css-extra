@@ -2,6 +2,7 @@
 
 # Exit on any error
 set -eux
+rm -f /home/jenkins/VirtualBox\ VMs/esss-devenv-7.3/esss-devenv-7.3.vbox
 
 export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 export PATH=/usr/local/bin:$PATH
