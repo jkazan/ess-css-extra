@@ -14,7 +14,7 @@
       "output_directory": "./build",
       "headless": true,
       "skip_export": true,
-      "format": "ova",
+      "format": "ovf",
       "vm_name": "esss-devenv-7.3"
     }
   ],
