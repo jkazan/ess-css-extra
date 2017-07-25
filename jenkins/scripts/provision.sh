@@ -5,6 +5,7 @@ set -eux
 
 export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 export PATH=/usr/local/bin:$PATH
+export csstudio_version=$(curl https://raw.githubusercontent.com/ESSICS/org.csstudio.ess.product/production/features/org.csstudio.ess.product.configuration.feature/rootfiles/ess-version.txt)
 
 # Update all packages
 yum update -y
@@ -14,7 +15,8 @@ yum clean all
 mkdir /etc/ansible
 
 ANSIBLE_VERSION=2.3.1.0
-export csstudio_version=4.5.0.1
+
+
 export
 # Install ansible-playbook and ansible-galaxy PEX files
 for exe in ansible-playbook ansible-galaxy
@@ -27,7 +29,6 @@ done
 cat << EOF > /etc/ansible/requirements.yml
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-oracle-jdk
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-repository
-#- src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-cs-studio
 - src: git+https://dat12jol@bitbucket.org/dat12jol/ics-ans-role-cs-studio
 EOF
 
