@@ -13,7 +13,7 @@ pipeline {
         stage('Build VM') {
             steps {
                 ansiColor('xterm') {
-                    sh 'cd jenkins && packer build testcs.json'
+                    sh 'cd jenkins && packer build -force testcs.json'
                 }
             }
         }
@@ -21,8 +21,7 @@ pipeline {
 
     post {
         always {
-            /* clean up the workspace */
-            deleteDir()
+          deleteDir()
         }
         failure {
           mail from: "jenkins@esss.se", to: "jesper.olsson@esss.se", subject: "${env.JOB_BASE_NAME} failed to start Cs-Studio on the centOS virtual image", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
