@@ -11,6 +11,7 @@
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "shutdown_command": "sudo shutdown -P now",
+      "output_directory": "./build",
       "headless": true,
       "skip_export": true,
       "format": "ova",
