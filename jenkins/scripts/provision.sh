@@ -27,7 +27,8 @@ done
 cat << EOF > /etc/ansible/requirements.yml
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-oracle-jdk
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-repository
-- src: git+https://dat12jol@bitbucket.org/dat12jol/ics-ans-role-cs-studio
+- src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-cs-studio
+#- src: git+https://dat12jol@bitbucket.org/dat12jol/ics-ans-role-cs-studio
 EOF
 
 cat << EOF > /etc/ansible/hosts
@@ -52,9 +53,9 @@ xvfb-run /usr/local/bin/css &
 
 sleep 45
 
-#pkill -9 xvfb-run
-#pkill -9 css
-#pkill -9 Xvfb
+pkill -9 xvfb-run
+pkill -9 css
+pkill -9 Xvfb
 
 if ! sudo grep "$(date "+SESSION %Y-%m-%d")" ~/.ess-cs-studio/.metadata/.log
 then
