@@ -7,8 +7,6 @@ export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 export PATH=/usr/local/bin:$PATH
 export csstudio_version=$(curl https://raw.githubusercontent.com/ESSICS/org.csstudio.ess.product/production/features/org.csstudio.ess.product.configuration.feature/rootfiles/ess-version.txt)
 
-
-vboxmanage list vms
 # Update all packages
 yum update -y
 yum install -y xorg-x11-server-Xvfb
