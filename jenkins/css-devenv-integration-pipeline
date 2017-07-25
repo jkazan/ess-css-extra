@@ -1,0 +1,35 @@
+pipeline {
+    agent { label 'css' }
+    options {
+        disableConcurrentBuilds()       //Disallow concurrent executions of the Pipeline
+        timestamps()
+    }
+    stages {
+        stage('Validate VM template') {
+            steps {
+              sh 'cd jenkins && packer validate testcs.json'
+            }
+        }
+        stage('Build VM') {
+            steps {
+                ansiColor('xterm') {
+                    sh 'cd jenkins && packer build testcs.json'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            /* clean up the workspace */
+            deleteDir()
+        }
+        failure {
+          mail from: "jenkins@esss.se", to: "jesper.olsson@esss.se", subject: "${env.JOB_BASE_NAME} failed to start Cs-Studio on the centOS virtual image", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
+        }
+
+        success {
+          mail from: "jenkins@esss.se", to: "jesper.olsson@esss.se", subject: "${env.JOB_BASE_NAME} successfully set up on centOS virtual image", body: "${env.JOB_BASE_NAME} built successfully!\nDirect job link: ${env.RUN_DISPLAY_URL}"
+        }
+    }
+}
