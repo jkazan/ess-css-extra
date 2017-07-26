@@ -63,8 +63,8 @@
         <configuration>
           <httpConfiguration>
             <all>
-              <connectionTimeout>100000</connectionTimeout>
-              <readTimeout>100000</readTimeout>
+              <connectionTimeout>240000</connectionTimeout>
+              <readTimeout>240000</readTimeout>
             </all>
           </httpConfiguration>
         </configuration>
