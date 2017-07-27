@@ -72,6 +72,7 @@ artifactoryFolder=development
 ```
 csstudioRepo=https://github.com/ESSICS
 displayBuilderRepo=https://github.com/ESSICS/org.csstudio.display.builder
+diirtRepo=https://github.com/ESSICS
 repoBranch=production
 buildFolder=ess-css-production
 email=test@replace.se
