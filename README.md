@@ -56,8 +56,8 @@ useArtifactory=false
 
 ```
 csstudioRepo=https://github.com/ESSICS
-displayBuilderRepo=https://github.com/kasemir/org.csstudio.display.builder
-diirtRepo=https://github.com/diirt/diirt
+displayBuilderRepo=https://github.com/ESSICS/org.csstudio.display.builder
+diirtRepo=https://github.com/ESSICS/diirt
 repoBranch=master
 buildFolder=ess-css-development
 email=test@replace.se
@@ -72,7 +72,7 @@ artifactoryFolder=development
 ```
 csstudioRepo=https://github.com/ESSICS
 displayBuilderRepo=https://github.com/ESSICS/org.csstudio.display.builder
-diirtRepo=https://github.com/ESSICS
+diirtRepo=https://github.com/ESSICS/diirt
 repoBranch=production
 buildFolder=ess-css-production
 email=test@replace.se
