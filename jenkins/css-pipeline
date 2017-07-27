@@ -105,7 +105,7 @@ pipeline {
       stage('00400 - diirt'){
         steps{
           dir("diirt"){
-            git(url: "${csstudioRepo}/diirt", branch: "${env.repoBranch}")
+            git(url: "${env.diirtRepo}", branch: "${env.repoBranch}")
           }
           sh "cd diirt && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }

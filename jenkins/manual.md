@@ -1,22 +1,29 @@
-## Step by step creating a pipeline
+## jenkins
 
-1.	Have Jenkins 2.x with pipeline and version control plugins installed
-2.	Press “New Item” [top left]
-3.	Choose name and the item type “Pipeline”
-4.	In the menu furthest down called “pipeline” change the definition to “Pipeline script from SCM”
-5.	Paste the url to the repo containing the Jenkinsfile and the path to it from within the repo
+This folder contains the file used by Jenkins to run the various pipelines.
 
----
+css-pipeline is the jenkinsfile that builds and tests the CS-Studio -community, ess -development and -production
 
-## Config for the pipeline
+css-devenv-integration-pipeline is the jenkinsfile that creates a virtual machine and launches the lates cs-studio production version. It needs the testcs.json file to specify how the virtual machine should be created. The folder scripts contains the scripts that will be ran on the virtual machine specified by testcs.json.        
+
+### Step by step creation of a pipeline
+
+1.	Have Jenkins 2.x with pipeline and version control plugins installed.
+2.	Press “New Item” [top left].
+3.	Choose name and the item type “Pipeline”.
+4.	In the menu furthest down called “pipeline” change the definition to “Pipeline script from SCM”.
+5.	Paste the url to the repo containing the Jenkinsfile and the path to it from within the repo (this repo).
+
+### Config for the pipelines
 
 For reusability, the script is reliant on parameters from the user. These parameters are to be inputted through configuring jenkins and require the plug in "environment injector".
-The option **"Prepare an environment** for the run" then gets available for the user. Variables can then be defined in the textfield "Properties **Content"**.
+The option **Prepare an environment for the run** then gets available for the user. Variables can then be defined in the textfield **Properties Content**.
 
+The css-devenv-integration-pipeline is intended to be ran after the production version has been built by css-pipeline. In order to make a pipeline start after another you need to make the second pipeline listen to the previous job as nan upstream. Do this by adding the configuration property "Build after other projects are built" under "Build Triggers", there you can set any type of project as upstream.  
 
-## Default environments
+### Default environments used at ESS
 
-### CSS-CE
+#### CS-Studio Community Edition
 
 ```
 csstudioRepo=https://github.com/ControlSystemStudio
@@ -28,13 +35,13 @@ useArtifactory=false
 
 ```
 
-### ess-css-development
+#### ESS CS-Studio development
 
 ```
 csstudioRepo=https://github.com/ESSICS
 displayBuilderRepo=https://github.com/kasemir/org.csstudio.display.builder
 repoBranch=master
-buildFolder=cs-studios
+buildFolder=ess-css-development
 email=test@replace.se
 useArtifactory=true
 artifactoryServerID=<replace>
@@ -42,14 +49,13 @@ artifactoryFolder=development
 
 ```
 
-### ess-css-production
+#### ESS CS-Studio production
 
 ```
 csstudioRepo=https://github.com/ESSICS
 displayBuilderRepo=https://github.com/ESSICS/org.csstudio.display.builder
 repoBranch=production
-buildFolder=cs-studio
-xmlFile=settings-for-jenkins.xml
+buildFolder=ess-css-production
 email=test@replace.se
 useArtifactory=true
 artifactoryServerID=<replace>
@@ -57,49 +63,30 @@ artifactoryFolder=production
 
 ```
 
----
+### Adding slack integration
 
-## Adding slack integration
+1. Download slack notification plugin for jenkins.
+2. Go to the slack url <teamname>.slack.com/apps/ and find jenkins integration.
+3. Press "add configuration" for the channel you want to add the integration to.
+4. Copy and add the Team domain, token and channel name for the pipeline script.
 
-1. download slack notification plugin for jenkins
-2. go to the slack url <teamname>.slack.com/apps/ and find jenkins integration
-3. press "add configuration" for the channel you want to add the integration to
-4. copy and add the Team domain, token and channel name for the pipeline script
+Currently Slack is not used to notify user's abount the pipeline.
 
-### Example
+#### Example
 
 ```
 slackSend message: "Build Started", token: 'AKrq2kTrwtrFjepxe6OFC5Lu', channel: "<theChannel>", teamDomain: "teamName"
 ```
 
----
-
-## Jenkinsfile syntax and tips for writing it
+### Jenkinsfile syntax references
 
 [Supported steps (predefined methods) for the jenkins file](https://jenkins.io/doc/pipeline/steps/)
 
 [Syntax reference, includes almost everything needed](https://jenkins.io/doc/book/pipeline/syntax/)
 
-## Useful tips
+### Useful tips
 
-Use triple ' (''') for a literal string.
-
-Substitution (using $variable) requires explicit string sign ("").
-
-The "steps" are ran on the slave, other is ran on the master.
-
-Variables declared in the "environment"-block are accessible from the slave as exported variables.
-
----
-
-## Problem description
-
-All jobs are currently created inside the Jenkins portal by clicking and inserting code. Jenkins then generates a xml-file named config.xml specific to each job. The community edition, ess-ics production and development all very similar job-scripts to set up the workspace, download fresh clones, build, and compiling everything. But as the configurations are slightly different it means that there are currently a bunch of duplicated code and manual input. These jobs are hard to modify and to share to others and split up between different folders in horrid autogenerated structures.  
-
-The idea is to collect the scripts that they have in common and automate a pipeline running them. Having all the configurations collected and condensed allows for easy sharing and allows the entire community to contribute and extend the scripts. It also makes it more robust and rigid towards changes as variables are easily set up and changed in the beginning of each file.  
-
-The pipeline will show up as a job in the Jenkins menu. We want setting up the pipeline to have as little configuration as possible inside the Jenkins portal. No magic should happen in Jenkins. To copy the pipeline all you need to do is to link to the repo the jenkinsfile is in and the path to it from the repo-root.
-
-The different jobs for the different versions of css do mainly the same thing baring some initial and final steps. We want to bulk the core jobs together in to one pipeline and encapsulate it inside specific environments and feed them to the core pipeline. Reducing 20+ different files down to only one.
-
----
+* Use triple ' (''') for a literal string.
+* Substitution (using $variable) requires explicit string sign ("").
+* The "steps" are ran on the slave, other is ran on the master.
+* Variables declared in the "environment"-block are accessible from the slave as exported variables.
