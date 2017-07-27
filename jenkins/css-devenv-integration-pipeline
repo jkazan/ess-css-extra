@@ -7,13 +7,13 @@ pipeline {
     stages {
         stage('Validate VM template') {
             steps {
-              sh 'cd jenkins && packer validate testcs.json'
+              sh 'cd jenkins && packer validate packer-vm-configuration.json'
             }
         }
         stage('Build VM') {
             steps {
                 ansiColor('xterm') {
-                    sh 'cd jenkins && packer build -force testcs.json'
+                    sh 'cd jenkins && packer build -force packer-vm-configuration.json'
                 }
             }
         }
