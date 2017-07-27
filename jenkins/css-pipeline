@@ -9,7 +9,7 @@ pipeline {
    */
   environment {
     MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit"
-    MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites "
+    MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
   }
 
   /*
@@ -17,166 +17,165 @@ pipeline {
    * Can be specified to label of certain slave or spin up a docker container
    * Can be applied to each stage separately or here to set for all stages.
    */
-  agent {
-    label 'css'
-  }
-
-  /*
-   * build specific options, the same as the checkboxes for the jobs inside jenkins
-   */
-  options {
-    disableConcurrentBuilds()       //Disallow concurrent executions of the Pipeline
-    timeout(time:2, unit: 'HOURS')  //Set a timeout period for the Pipeline run, after which Jenkins should abort the Pipeline
-    timestamps()
-    skipDefaultCheckout()
-  }
-
-  /*
-   * Stages Are as a checkpoint and the steps ran will show up in the jenkins ui.
-   * The execution time for each stage will be monitored and all calls can be
-   * overviewed from the jenkins ui
-   *
-   */
-  stages {
-
-    /*
-     * Print out environment variables and make sure a clean working space is setup.
-     */
-    stage('00000 - workspace-prep '){
-      steps{
-        echo "csstudioRepo = ${env.csstudioRepo} \nXMLfile = ${env.XMLfile}, make sure it's the correct file with updated paths"
-        echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
-        echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
-        echo "project will be built in to ${env.WORKSPACE}/${env.buildFolder}"
-        echo "path to workspace: ${env.WORKSPACE}"
-        sh "export"
-        pwd()
-        dir("../${buildFolder}"){
-          deleteDir() // rm -rf *
-        }
+   agent {
+      docker {
+        image 'europeanspallationsource/oracle-jdk-maven'
+        label 'css'
       }
     }
 
     /*
-     * Getting the "css-extra" project, containing ESS-specific building files.
+     * build specific options, the same as the checkboxes for the jobs inside jenkins
      */
-    stage('00100 - clone css-extra'){
-      steps {
-        dir("../${buildFolder}/ess-css-extra"){
-          git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
-          dir('maven'){
-            sh "sed -i -e s/###replace###/${env.buildFolder}/g settings-for-jenkins.xml"
-            sh 'cat settings-for-jenkins.xml'
+    options {
+      disableConcurrentBuilds()       //Disallow concurrent executions of the Pipeline
+      timeout(time:2, unit: 'HOURS')  //Set a timeout period for the Pipeline run, after which Jenkins should abort the Pipeline
+      timestamps()
+      skipDefaultCheckout()
+    }
+
+    /*
+     * Stages Are as a checkpoint and the steps ran will show up in the jenkins ui.
+     * The execution time for each stage will be monitored and all calls can be
+     * overviewed from the jenkins ui
+     *
+     */
+    stages {
+
+      /*
+       * Print out environment variables and make sure a clean working space is setup.
+       */
+      stage('00000 - workspace-prep '){
+        steps{
+          echo "csstudioRepo = ${env.csstudioRepo}"
+          echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
+          echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
+          echo "project will be built in to ${env.WORKSPACE}/"
+          echo "path to workspace: ${env.WORKSPACE}"
+          sh "export"
+          sh 'ls'
+          sh 'rm -rf .m2'
+          sh 'rm -rf *'
+        }
+      }
+
+      /*
+       * Getting the "css-extra" project, containing ESS-specific building files.
+       */
+      stage('00100 - clone css-extra'){
+        steps {
+          dir("ess-css-extra"){
+            git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
           }
+          sh 'ls'
+          sh "sed -i -e s/###replace###/${env.JOB_NAME}/g ess-css-extra/maven/settings-for-jenkins.xml"
+          sh 'cat ess-css-extra/maven/settings-for-jenkins.xml'
         }
       }
-    }
 
-    /*
-     * Getting and building the "maven-osgi-bundles" project.
-     */
-    stage('00200 - maven-osgi-bundles '){
-      steps {
-        dir("../${buildFolder}/maven-osgi-bundles"){
-          git(url: "${csstudioRepo}/maven-osgi-bundles.git", branch: "${env.repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
-        }
-      }
-    }
-
-    /*
-     * Getting and building the "cs-studio-thirdparty" project.
-     */
-    stage('00300 - cs-studio-thirdparty'){
-      steps{
-        dir("../${buildFolder}/cs-studio-thirdparty"){
-          git(url: "${csstudioRepo}/cs-studio-thirdparty.git", branch: "${env.repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
-        }
-      }
-    }
-
-    /*
-     * Getting and building the "diirt" project.
-     * Contains a time critical test that might fail depending on slave load
-     */
-    stage('00400 - diirt'){
-      steps{
-        dir("../${buildFolder}/diirt"){
-          git(url: "${csstudioRepo}/diirt", branch: "${env.repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
-        }
-      }
-    }
-
-    /*
-     * Getting and building the "cs-studio" project.
-     */
-    stage('00500 - cs-studio'){
-      steps{
-        dir("../${buildFolder}/cs-studio"){
-          git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
-          dir("core"){
-            sh "mvn ${env.MVNOPT} --settings  ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+      /*
+       * Getting and building the "maven-osgi-bundles" project.
+       */
+      stage('00200 - maven-osgi-bundles '){
+        steps {
+          dir("maven-osgi-bundles"){
+            git(url: "${env.csstudioRepo}/maven-osgi-bundles.git", branch: "${env.repoBranch}")
           }
-          dir("applications"){
-            sh "mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+          sh "cd maven-osgi-bundles && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+        }
+      }
+
+      /*
+       * Getting and building the "cs-studio-thirdparty" project.
+       */
+      stage('00300 - cs-studio-thirdparty'){
+        steps{
+          dir("cs-studio-thirdparty"){
+            git(url: "${env.csstudioRepo}/cs-studio-thirdparty.git", branch: "${env.repoBranch}")
           }
+            sh "cd cs-studio-thirdparty && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
-    }
 
-    /*
-     * Getting and building the "org.csstudio.display.builder" project.
-     */
-    stage('00550 - org.csstudio.display.builder'){
-      steps{
-        dir("../${buildFolder}/org.csstudio.display.builder"){
-          git(url: "${env.displayBuilderRepo}", branch: "${env.repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/../${env.buildFolder}/ess-css-extra/ess_css_comp_repo clean verify"
+      /*
+       * Getting and building the "diirt" project.
+       * Contains a time critical test that might fail depending on slave load
+       */
+      stage('00400 - diirt'){
+        steps{
+          dir("diirt"){
+            git(url: "${env.diirtRepo}", branch: "${env.repoBranch}")
+          }
+          sh "cd diirt && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
-    }
 
-    /*
-     * Getting and building the "org.csstudio.product" project.
-     */
-    stage('00600 - org.csstudio.product'){
-      steps{
-        dir("../${buildFolder}/org.csstudio.product"){
-          git(url: "${csstudioRepo}/org.csstudio.product.git", branch: "${env.repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+      /*
+       * Getting and building the "cs-studio" project.
+       */
+      stage('00500 - cs-studio'){
+        steps{
+          dir("cs-studio"){
+            git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
+            dir('applications'){}
+            dir('core'){}
+          }
+          sh 'ls cs-studio'
+          sh "cd cs-studio/core && mvn ${env.MVNOPT} --settings  ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+          sh "cd cs-studio/applications && mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
         }
       }
-    }
 
-    /*
-     * Getting and building the "org.csstudio.ess.product" project.
-     */
-    stage('00700 - org.csstudio.ess.product'){
-      steps{
-        dir("../${buildFolder}/org.csstudio.ess.product"){
-          git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
-          sh "mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+      /*
+       * Getting and building the "org.csstudio.display.builder" project.
+       */
+      stage('00550 - org.csstudio.display.builder'){
+        steps{
+          dir("org.csstudio.display.builder"){
+            git(url: "${env.displayBuilderRepo}", branch: "${env.repoBranch}")
+          }
+          sh "cd org.csstudio.display.builder && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/ess-css-extra/ess_css_comp_repo clean verify"
         }
       }
-    }
 
-    /*
-     * Based on conditional, publishes binaries to a predefined artifactory server.
-     * "when" allows for conditionals inside the declarative syntax.
-     * The artifactory plugin doesn't fully support declarative pipeline.
-     * Therefore a script-block is needed.
-     */
-    stage ('00700 - Ship artifact - optional') {
-      when {
-        environment name: 'useArtifactory', value: 'true'
+      /*
+       * Getting and building the "org.csstudio.product" project.
+       */
+      stage('00600 - org.csstudio.product'){
+        steps{
+          dir("org.csstudio.product"){
+            git(url: "${csstudioRepo}/org.csstudio.product.git", branch: "${env.repoBranch}")
+          }
+          sh "cd org.csstudio.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+        }
       }
-      steps{
-        dir("../${buildFolder}") {
+
+      /*
+       * Getting and building the "org.csstudio.ess.product" project.
+       */
+      stage('00700 - org.csstudio.ess.product'){
+        steps{
+          dir("org.csstudio.ess.product"){
+            git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
+          }
+          sh "cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml clean verify"
+        }
+      }
+
+      /*
+       * Based on conditional, publishes binaries to a predefined artifactory server.
+       * "when" allows for conditionals inside the declarative syntax.
+       * The artifactory plugin doesn't fully support declarative pipeline.
+       * Therefore a script-block is needed.
+       */
+      stage ('00700 - Ship artifact - optional') {
+        when {
+          environment name: 'useArtifactory', value: 'true'
+        }
+        steps{
           script {
             def server = Artifactory.server "${env.artifacoryServerID}"
-            def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/../${env.buildFolder}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
+            def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
             def uploadSpec = """{
             "files": [
             {
@@ -193,34 +192,30 @@ pipeline {
           }
         }
       }
+
+
+
     }
 
     /*
+     * Notify developers by email depending on the status of the pipeline after the run.
+     */
+    post {
+    /*
      * Deletes all files created by the pipeline
      */
-    stage('00800 - clean up'){
-      steps{
-        dir("../${buildFolder}"){
-          deleteDir()
-        }
+      always {
         deleteDir()
       }
-    }
-  }
 
-  /*
-   * Notify developers by email depending on the status of the pipeline after the run.
-   */
-  post {
+      failure {
+        mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} failed to build", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
+      }
 
-    failure {
-      mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} failed to build", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
-    }
+      success {
+        mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} built successfully", body: "${env.JOB_BASE_NAME} built successfully!\nDirect job link: ${env.RUN_DISPLAY_URL}"
+      }
 
-    success {
-      mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} built successfully", body: "${env.JOB_BASE_NAME} built successfully!\nDirect job link: ${env.RUN_DISPLAY_URL}"
     }
 
   }
-
-}

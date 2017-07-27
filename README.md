@@ -18,6 +18,10 @@ This folder contains various files to be used by Maven during the build.
 
 This folder contains the file used by Jenkins to run the various pipelines.
 
+css-pipeline is the jenkinsfile that builds and tests the CS-Studio -community, ess -development and -production
+
+css-devenv-integration-pipeline is the jenkinsfile that creates a virtual machine and launches the lates cs-studio production version. It needs the testcs.json file to specify how the virtual machine should be created. The folder scripts contains the scripts that will be ran on the virtual machine specified by testcs.json.        
+
 ### Step by step creation of a pipeline
 
 1.	Have Jenkins 2.x with pipeline and version control plugins installed.
@@ -26,10 +30,12 @@ This folder contains the file used by Jenkins to run the various pipelines.
 4.	In the menu furthest down called “pipeline” change the definition to “Pipeline script from SCM”.
 5.	Paste the url to the repo containing the Jenkinsfile and the path to it from within the repo (this repo).
 
-### Config for the pipeline
+### Config for the pipelines
 
 For reusability, the script is reliant on parameters from the user. These parameters are to be inputted through configuring jenkins and require the plug in "environment injector".
 The option **Prepare an environment for the run** then gets available for the user. Variables can then be defined in the textfield **Properties Content**.
+
+The css-devenv-integration-pipeline is intended to be ran after the production version has been built by css-pipeline. In order to make a pipeline start after another you need to make the second pipeline listen to the previous job as nan upstream. Do this by adding the configuration property "Build after other projects are built" under "Build Triggers", there you can set any type of project as upstream.  
 
 ### Default environments used at ESS
 
@@ -38,6 +44,7 @@ The option **Prepare an environment for the run** then gets available for the us
 ```
 csstudioRepo=https://github.com/ControlSystemStudio
 displayBuilderRepo=https://github.com/kasemir/org.csstudio.display.builder
+diirtRepo=https://github.com/diirt/diirt
 repoBranch=master
 buildFolder=css-ce
 email=test@replace.se
@@ -50,6 +57,7 @@ useArtifactory=false
 ```
 csstudioRepo=https://github.com/ESSICS
 displayBuilderRepo=https://github.com/kasemir/org.csstudio.display.builder
+diirtRepo=https://github.com/diirt/diirt
 repoBranch=master
 buildFolder=ess-css-development
 email=test@replace.se
@@ -64,6 +72,7 @@ artifactoryFolder=development
 ```
 csstudioRepo=https://github.com/ESSICS
 displayBuilderRepo=https://github.com/ESSICS/org.csstudio.display.builder
+diirtRepo=https://github.com/ESSICS
 repoBranch=production
 buildFolder=ess-css-production
 email=test@replace.se
