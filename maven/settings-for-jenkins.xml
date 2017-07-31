@@ -2,7 +2,8 @@
 <settings>
 
   <localRepository>
-    /home/jenkins/workspace/###replace###/.m2
+    <!-- /home/jenkins/workspace/###replace###/.m2 -->
+    /home/jenkins/workspace/css-maven-repo/.m2
   </localRepository>
 
   <profiles>
