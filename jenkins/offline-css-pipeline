@@ -11,8 +11,8 @@ pipeline {
     MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit"
     MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
     MVNOFFLINEOPT="-o"
-    EMAIL_BODY_FAILURE="${env.JOB_BASE_NAME} failed to build!\\nDirect job link: ${env.RUN_DISPLAY_URL}\\n\\nTIPS:\\n- Run the online version if the problem is related to the Maven dependency check."
-    EMAIL_BODY_SUCCESS="${env.JOB_BASE_NAME} built successfully!\\nDirect job link: ${env.RUN_DISPLAY_URL}"
+    EMAIL_BODY_FAILURE="${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}\\n\\nTIPS:\\n- Run the online version if the problem is related to the Maven dependency check."
+    EMAIL_BODY_SUCCESS="${env.JOB_BASE_NAME} built successfully!\nDirect job link: ${env.RUN_DISPLAY_URL}"
     EMAIL_SUBJECT_FAILURE="${env.JOB_BASE_NAME} failed to build"
     EMAIL_SUBJECT_SUCCESS="${env.JOB_BASE_NAME} built successfully"
   }
