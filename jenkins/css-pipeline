@@ -10,6 +10,10 @@ pipeline {
   environment {
     MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit"
     MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
+    EMAIL_BODY_FAILURE="${env.JOB_BASE_NAME} failed to build!\\nDirect job link: ${env.RUN_DISPLAY_URL}"
+    EMAIL_BODY_SUCCESS="${env.JOB_BASE_NAME} built successfully!\\nDirect job link: ${env.RUN_DISPLAY_URL}"
+    EMAIL_SUBJECT_FAILURE="${env.JOB_BASE_NAME} failed to build"
+    EMAIL_SUBJECT_SUCCESS="${env.JOB_BASE_NAME} built successfully"
   }
 
   /*
@@ -210,11 +214,11 @@ pipeline {
       }
 
       failure {
-        mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} failed to build", body: "${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
+        mail from: "jenkins@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_FAILURE}", body: "${env.EMAIL_BODY_FAILURE}"
       }
 
       success {
-        mail from: "jenkins@esss.se", to: "${email}", subject: "${env.JOB_BASE_NAME} built successfully", body: "${env.JOB_BASE_NAME} built successfully!\nDirect job link: ${env.RUN_DISPLAY_URL}"
+        mail from: "jenkins@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_SUCCESS}", body: "${env.EMAIL_BODY_SUCCESS}"
       }
 
     }
