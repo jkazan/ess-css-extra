@@ -1,0 +1,31 @@
+{
+  "variables": {
+    "source_url": "https://artifactory.esss.lu.se/artifactory/swi-pkg/virtualbox/1.0.0/esss-centos-7.3.ova",
+    "devenv_version": "{{env `DEVENV_VERSION`}}",
+    "description": "ESS DevEnv Vagrant base box based on CentOS 7.3"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "{{user `source_url`}}",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "sudo shutdown -P now",
+      "output_directory": "./build",
+      "headless": true,
+      "skip_export": true,
+      "format": "ova",
+      "vm_name": "esss-devenv-7.3"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "scripts/provision.sh",
+      "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+      "environment_vars": [
+        "DEVENV_VERSION={{user `devenv_version`}}"
+      ]
+    }
+  ]
+}
