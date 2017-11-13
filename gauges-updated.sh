@@ -1,6 +1,11 @@
 #!/bin/bash
 #
 
+echo ""
+echo "===="
+echo "==== JDK used: " $JAVA_HOME
+echo "===="
+
 START=$(date +%s)
 
 cd ..
