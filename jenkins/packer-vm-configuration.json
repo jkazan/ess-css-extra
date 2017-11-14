@@ -1,8 +1,8 @@
 {
   "variables": {
-    "source_url": "https://artifactory.esss.lu.se/artifactory/swi-pkg/virtualbox/1.0.0/esss-centos-7.3.ova",
+    "source_url": "https://artifactory01.esss.lu.se:443/artifactory/swi-pkg/virtualbox/1708.01/esss-centos-7.ova",
     "devenv_version": "{{env `DEVENV_VERSION`}}",
-    "description": "ESS DevEnv Vagrant base box based on CentOS 7.3"
+    "description": "ESS DevEnv Vagrant base box based on CentOS 7"
   },
   "builders": [
     {
@@ -15,7 +15,7 @@
       "headless": true,
       "skip_export": true,
       "format": "ova",
-      "vm_name": "esss-devenv-7.3"
+      "vm_name": "esss-devenv-7"
     }
   ],
   "provisioners": [
