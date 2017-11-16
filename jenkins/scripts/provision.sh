@@ -30,6 +30,7 @@ done
 cat << EOF > /etc/ansible/requirements.yml
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-oracle-jdk
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-repository
+- src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-desktop-base
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-cs-studio
 EOF
 
