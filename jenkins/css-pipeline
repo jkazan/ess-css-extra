@@ -137,7 +137,7 @@ pipeline {
       stage('00550 - org.csstudio.display.builder'){
         steps{
           dir("org.csstudio.display.builder"){
-            git(url: "${env.displayBuilderRepo}", branch: "${env.repoBranch}")
+            git(url: "${env.displayBuilderRepo}", branch: "${env.displayBuilderRepoBranch}")
           }
           sh "cd org.csstudio.display.builder && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings-for-jenkins.xml -Dcss_repo=file:${env.WORKSPACE}/ess-css-extra/ess_css_comp_repo clean verify"
         }
