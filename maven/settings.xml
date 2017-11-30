@@ -4,6 +4,72 @@
   <profiles>
     <profile>
       <id>ess-css-settings</id>
+
+      <repositories>
+        <repository>
+          <id>ess-ics-ext-release</id>
+          <url>https://artifactory.esss.lu.se/artifactory/ext-release-local</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>ess-ics-ext-snapshot</id>
+          <url>https://artifactory.esss.lu.se/artifactory/ext-snapshot-local</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>ess-ics-libs-release</id>
+          <url>https://artifactory.esss.lu.se/artifactory/libs-release-local</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>ess-ics-libs-snapshot</id>
+          <url>https://artifactory.esss.lu.se/artifactory/libs-snapshot-local</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>ess-ics-plugins-release</id>
+          <url>https://artifactory.esss.lu.se/artifactory/plugins-release</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>ess-ics-plugins-snapshot</id>
+          <url>https://artifactory.esss.lu.se/artifactory/plugins-snapshot</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+
       <properties>
         <!-- Optionally, configure a composite repo.
              By default, the Maven build will fetch all
@@ -37,18 +103,22 @@
            <baselineMode>warn</baselineMode>
            <jgit.dirtyWorkingTree>warning</jgit.dirtyWorkingTree>
 
+      </properties>
+    </profile>
+    <profile>
+      <id>ess-css-no-test</id>
+      <properties>
            <!-- Don't use embedded compiler -->
            <!-- <maven.compiler.fork>true</maven.compiler.fork> -->
 
            <!-- Skip unit tests -->
-           <maven.test.skip>false</maven.test.skip>
-           <skipTests>false</skipTests>
+           <maven.test.skip>true</maven.test.skip>
+           <skipTests>true</skipTests>
 
          </properties>
        </profile>
      </profiles>
 
-     <!-- Enable the above settings -->
      <activeProfiles>
       <activeProfile>ess-css-settings</activeProfile>
     </activeProfiles>
