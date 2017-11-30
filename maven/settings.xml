@@ -105,19 +105,6 @@
 
       </properties>
     </profile>
-    <profile>
-      <id>ess-css-no-test</id>
-      <properties>
-           <!-- Don't use embedded compiler -->
-           <!-- <maven.compiler.fork>true</maven.compiler.fork> -->
-
-           <!-- Skip unit tests -->
-           <maven.test.skip>true</maven.test.skip>
-           <skipTests>true</skipTests>
-
-         </properties>
-       </profile>
-     </profiles>
 
      <activeProfiles>
       <activeProfile>ess-css-settings</activeProfile>

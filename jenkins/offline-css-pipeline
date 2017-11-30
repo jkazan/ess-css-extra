@@ -9,9 +9,7 @@ pipeline {
    */
   environment {
     MAVEN_OPTS="-Xmx2048m -Xms1024M -Xss128M -XX:-UseGCOverheadLimit"
-    MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites \
-            -Dmaven.repo.local=/home/jenkins/workspace/css-maven-repo/.m2 \
-            -Dcsstudio.composite.repo=/home/jenkins/workspace/css-comp-repo"
+    MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites -Dmaven.repo.local=/home/jenkins/workspace/css-maven-repo/.m2 -Dcsstudio.composite.repo=/home/jenkins/workspace/${env.JOB_NAME}/ess-css-extra/ess_css_comp_repo"
     MVNOFFLINEOPT="-o"
     EMAIL_BODY_FAILURE="${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}\\n\\nTIPS:\\n- Run the online version if the problem is related to the Maven dependency check."
     EMAIL_BODY_SUCCESS="${env.JOB_BASE_NAME} built successfully!\nDirect job link: ${env.RUN_DISPLAY_URL}"
@@ -142,7 +140,7 @@ pipeline {
           dir("org.csstudio.display.builder"){
             git(url: "${env.displayBuilderRepo}", branch: "${env.repoBranch}")
           }
-          sh "cd org.csstudio.display.builder && mvn ${env.MVNOFFLINEOPT} ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:${env.WORKSPACE}/css-comp-repo clean verify"
+          sh "cd org.csstudio.display.builder && mvn ${env.MVNOFFLINEOPT} ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:${env.WORKSPACE}/ess-css-extra/ess_css_comp_repo clean verify"
         }
       }
 
