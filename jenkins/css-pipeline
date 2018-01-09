@@ -150,7 +150,7 @@ pipeline {
           dir("org.csstudio.product"){
             git(url: "${csstudioRepo}/org.csstudio.product.git", branch: "${env.repoBranch}")
           }
-          sh "cd org.csstudio.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml clean verify"
+          sh "cd org.csstudio.product/org.csstudio.product && mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings.xml clean verify"
         }
       }
 
