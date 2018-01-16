@@ -59,10 +59,10 @@ pipeline {
           echo "path to workspace: ${env.WORKSPACE}"
           sh "export"
           sh 'ls'
-          sh 'rm -rf .m2'
-          sh 'rm -rf *'
+          sh 'rm -rfv .m2'
+          sh 'rm -rfv *'
           sh 'ls /home/jenkins/workspace/css-maven-repo/'
-          sh 'rm -rf /home/jenkins/workspace/css-maven-repo/.m2'
+          sh 'rm -rfv /home/jenkins/workspace/css-maven-repo/.m2'
         }
       }
 
