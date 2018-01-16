@@ -61,6 +61,8 @@ pipeline {
           sh 'ls'
           sh 'rm -rf .m2'
           sh 'rm -rf *'
+          sh 'ls /home/jenkins/workspace/css-maven-repo/'
+          sh 'rm -rf /home/jenkins/workspace/css-maven-repo/.m2'
         }
       }
 
