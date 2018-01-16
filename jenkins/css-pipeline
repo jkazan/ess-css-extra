@@ -58,11 +58,7 @@ pipeline {
           echo "project will be built in to ${env.WORKSPACE}/"
           echo "path to workspace: ${env.WORKSPACE}"
           sh "export"
-          sh 'ls'
-          sh 'rm -rfv .m2'
-          sh 'rm -rfv *'
-          sh 'ls /home/jenkins/workspace/css-maven-repo/'
-          sh 'rm -rfv /home/jenkins/workspace/css-maven-repo/.m2'
+          sh 'rm -rf /home/jenkins/workspace/css-maven-repo/.m2'
         }
       }
 
