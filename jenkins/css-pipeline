@@ -65,7 +65,7 @@ pipeline {
       /*
        * Getting the "css-extra" project, containing ESS-specific building files.
        */
-      stage('00100 - clone css-extra'){
+      stage('00100 - clone ess-css-extra'){
         steps {
           dir("ess-css-extra"){
             git(url: 'https://github.com/ESSICS/ess-css-extra.git', branch: "${env.repoBranch}")
