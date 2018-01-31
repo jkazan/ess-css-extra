@@ -6,6 +6,7 @@ set -eux
 export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 export PATH=/usr/local/bin:$PATH
 export csstudio_version=$(curl https://raw.githubusercontent.com/ESSICS/org.csstudio.ess.product/production/features/org.csstudio.ess.product.configuration.feature/rootfiles/ess-version.txt)
+csstudio_repository=production
 
 # Update all packages
 yum update -y
@@ -29,14 +30,15 @@ done
 cat << EOF > /etc/ansible/requirements.yml
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-oracle-jdk
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-repository
-- src: git+https://dat12jol@bitbucket.org/dat12jol/ics-ans-role-cs-studio
+- src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-desktop-base
+- src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-cs-studio
 EOF
 
 cat << EOF > /etc/ansible/hosts
 localhost ansible_connection=local
 EOF
 
-cat << EOF > /etc/ansible/jesperrun.yml
+cat << EOF > /etc/ansible/csstudio.yml
 - hosts: all
   become: yes
   roles:
@@ -47,9 +49,11 @@ EOF
 /usr/bin/Xvfb :99 -screen 1 1024x768x24 &
 export DISPLAY=:99
 
-# Run things
+# Install CS-Studio
 ansible-galaxy install -r /etc/ansible/requirements.yml -p /etc/ansible/roles
-ansible-playbook /etc/ansible/jesperrun.yml
+ansible-playbook -e csstudio_version=${csstudio_version} -e csstudio_repository=${csstudio_repository} /etc/ansible/csstudio.yml
+
+# Run CS-Studio
 xvfb-run /usr/local/bin/css &
 
 sleep 45

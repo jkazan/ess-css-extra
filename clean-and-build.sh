@@ -1,6 +1,13 @@
 #!/bin/bash
 #
 
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home
+
+echo ""
+echo "===="
+echo "==== JDK used: " $JAVA_HOME
+echo "===="
+
 START=$(date +%s)
 
 cd ..
@@ -60,7 +67,7 @@ echo ""
 echo "===="
 echo "==== BUILDING org.csstudio.product"
 echo "===="
-(cd org.csstudio.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 6_org.csstudio.product.log
+(cd org.csstudio.product/org.csstudio.product; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean verify) | tee 6_org.csstudio.product.log
 
 echo ""
 echo "===="

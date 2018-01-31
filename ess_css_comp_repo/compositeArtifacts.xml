@@ -15,7 +15,7 @@
     <child location="../../cs-studio/applications/p2repo"/>
     <child location="../../org.csstudio.display.builder/repository/target/repository"/>
     <child location="http://download.controlsystemstudio.org/issue/1818"/>
-    <child location="../../org.csstudio.product/repository/target/repository"/>
+    <child location="../../org.csstudio.product/org.csstudio.product/repository/target/repository"/>
 <!--
     <child location="../../../CS-Studio-Libraries/cs-studio-eclipse-4.3/p2repo"/>
     <child location="../../../CS-Studio-Libraries/cs-studio-4.4/p2repo"/>

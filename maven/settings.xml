@@ -1,70 +1,126 @@
 <!-- Maven settings.xml -->
 <settings>
 
-  <profiles>
-    <profile>
-      <id>ess-css-settings</id>
-      <properties>
-        <!-- Optionally, configure a composite repo.
-             By default, the Maven build will fetch all
-             depenencies from remote repositories.
-             In your composite repository, you can list
-             local repositories.
-           -->
-           <!-- Path to your composite repo -->
-           <csstudio.composite.repo>/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
+    <profiles>
+        <profile>
+            <id>ess-css-settings</id>
+            <repositories>
+                <repository>
+                    <id>ess-ics-ext-release</id>
+                    <url>https://artifactory.esss.lu.se/artifactory/ext-release-local</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>ess-ics-ext-snapshot</id>
+                    <url>https://artifactory.esss.lu.se/artifactory/ext-snapshot-local</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>ess-ics-libs-release</id>
+                    <url>https://artifactory.esss.lu.se/artifactory/libs-release-local</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>ess-ics-libs-snapshot</id>
+                    <url>https://artifactory.esss.lu.se/artifactory/libs-snapshot-local</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>ess-ics-plugins-release</id>
+                    <url>https://artifactory.esss.lu.se/artifactory/plugins-release</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>ess-ics-plugins-snapshot</id>
+                    <url>https://artifactory.esss.lu.se/artifactory/plugins-snapshot</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+            <properties>
+                <!-- Optionally, configure a composite repo.
+                  By default, the Maven build will fetch all
+                  depenencies from remote repositories.
+                  In your composite repository, you can list
+                  local repositories.
+                -->
+                <!-- Path to your composite repo -->
+                <csstudio.composite.repo>/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo</csstudio.composite.repo>
 
-        <!-- By default, even if you use a composite repo
-             that lists local P2 sites,
-             Maven will still consult the remote CSS repos.
-             Setting this property DISABLES downloads from
-             http://download.controlsystemstudio.org,
-             so you use _only_ sites listed in your composite repo.
-             If you still want to use selected entries from
-             http://download.controlsystemstudio.org,
-             you can list them in your composite repo.
-           -->
-           <cs-studio>false</cs-studio>
-           <eclipse>false</eclipse>
+                <!-- By default, even if you use a composite repo
+                  that lists local P2 sites,
+                  Maven will still consult the remote CSS repos.
+                  Setting this property DISABLES downloads from
+                  http://download.controlsystemstudio.org,
+                  so you use _only_ sites listed in your composite repo.
+                  If you still want to use selected entries from
+                  http://download.controlsystemstudio.org,
+                  you can list them in your composite repo.
+                -->
+                <cs-studio>false</cs-studio>
+                <eclipse>false</eclipse>
 
-        <!-- Ignore artifacts in ~/.m2/repository/p2,
-             which some other "mvn install" may have placed
-             there.
-           -->
-           <tycho.localArtifacts>ignore</tycho.localArtifacts>
+                <!-- Ignore artifacts in ~/.m2/repository/p2,
+                  which some other "mvn install" may have placed
+                  there.
+                -->
+                <tycho.localArtifacts>ignore</tycho.localArtifacts>
 
-           <!-- Issue warnings instead of aborting on error -->
-           <baselineMode>warn</baselineMode>
-           <jgit.dirtyWorkingTree>warning</jgit.dirtyWorkingTree>
+                <!-- Issue warnings instead of aborting on error -->
+                <baselineMode>warn</baselineMode>
+                <jgit.dirtyWorkingTree>warning</jgit.dirtyWorkingTree>
 
-           <!-- Don't use embedded compiler -->
-           <!-- <maven.compiler.fork>true</maven.compiler.fork> -->
+            </properties>
+        </profile>
+    </profiles>
 
-           <!-- Skip unit tests -->
-           <maven.test.skip>false</maven.test.skip>
-           <skipTests>false</skipTests>
-
-         </properties>
-       </profile>
-     </profiles>
-
-     <!-- Enable the above settings -->
-     <activeProfiles>
-      <activeProfile>ess-css-settings</activeProfile>
+    <activeProfiles>
+        <activeProfile>ess-css-settings</activeProfile>
     </activeProfiles>
 
     <servers>
-      <server>
-        <id>central</id>
-        <configuration>
-          <httpConfiguration>
-            <all>
-              <connectionTimeout>240000</connectionTimeout>
-              <readTimeout>240000</readTimeout>
-            </all>
-          </httpConfiguration>
-        </configuration>
-      </server>
+        <server>
+            <id>central</id>
+            <configuration>
+                <httpConfiguration>
+                    <all>
+                        <connectionTimeout>240000</connectionTimeout>
+                        <readTimeout>240000</readTimeout>
+                    </all>
+                </httpConfiguration>
+            </configuration>
+        </server>
     </servers>
 
-  </settings>
+</settings>
