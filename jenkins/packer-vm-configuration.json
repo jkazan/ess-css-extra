@@ -1,6 +1,6 @@
 {
   "variables": {
-    "source_url": "https://artifactory01.esss.lu.se:443/artifactory/swi-pkg/virtualbox/1708.01/esss-centos-7.ova",
+    "source_url": "https://artifactory01.esss.lu.se:443/artifactory/swi-pkg/virtualbox/1708.02/esss-centos-7.ova",
     "devenv_version": "{{env `DEVENV_VERSION`}}",
     "description": "ESS DevEnv Vagrant base box based on CentOS 7"
   },
