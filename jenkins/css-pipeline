@@ -52,6 +52,9 @@ pipeline {
        */
       stage('00000 - workspace-prep '){
         steps{
+
+          slackSend channel: "#cs-studio", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+
           echo "csstudioRepo = ${env.csstudioRepo}"
           echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
           echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
@@ -215,6 +218,7 @@ pipeline {
       }
 
       success {
+        def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
         mail from: "jenkins@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_SUCCESS}", body: "${env.EMAIL_BODY_SUCCESS}"
       }
 
