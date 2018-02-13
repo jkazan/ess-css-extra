@@ -52,9 +52,6 @@ pipeline {
        */
       stage('00000 - workspace-prep '){
         steps{
-
-          slackSend channel: "#cs-studio", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-
           echo "csstudioRepo = ${env.csstudioRepo}"
           echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
           echo "MVNOPT=${env.MVNOPT}  \nrunning on jenkinslave: ${env.NODE_NAME}"
@@ -194,6 +191,7 @@ pipeline {
             ]
             }"""
             server.upload(uploadSpec)
+            slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} loaded into Artifactory at ${artifactoryFolder}."
           }
         }
       }
