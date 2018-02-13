@@ -218,7 +218,6 @@ pipeline {
       }
 
       success {
-        def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
         mail from: "jenkins@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_SUCCESS}", body: "${env.EMAIL_BODY_SUCCESS}"
       }
 
