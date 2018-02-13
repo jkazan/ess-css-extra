@@ -78,7 +78,7 @@ pipeline {
       /*
        * Getting and building the "maven-osgi-bundles" project.
        */
-      stage('00200 - maven-osgi-bundles '){
+      stage('00200\nmaven‑osgi‑bundles '){
         steps {
           dir("maven-osgi-bundles"){
             git(url: "${env.csstudioRepo}/maven-osgi-bundles.git", branch: "${env.repoBranch}")
@@ -90,7 +90,7 @@ pipeline {
       /*
        * Getting and building the "cs-studio-thirdparty" project.
        */
-      stage('00300 - cs-studio-thirdparty'){
+      stage('00300\ncs‑studio‑thirdparty'){
         steps{
           dir("cs-studio-thirdparty"){
             git(url: "${env.csstudioRepo}/cs-studio-thirdparty.git", branch: "${env.repoBranch}")
@@ -103,7 +103,7 @@ pipeline {
        * Getting and building the "diirt" project.
        * Contains a time critical test that might fail depending on slave load
        */
-      stage('00400 - diirt'){
+      stage('00400\ndiirt'){
         steps{
           dir("diirt"){
             git(url: "${env.diirtRepo}", branch: "${env.repoBranch}")
@@ -115,7 +115,7 @@ pipeline {
       /*
        * Getting and building the "cs-studio" project.
        */
-      stage('00500 - cs-studio'){
+      stage('00500\ncs‑studio'){
         steps{
           dir("cs-studio"){
             git(url: "${csstudioRepo}/cs-studio", branch: "${env.repoBranch}")
@@ -131,7 +131,7 @@ pipeline {
       /*
        * Getting and building the "org.csstudio.display.builder" project.
        */
-      stage('00550 - org.csstudio.display.builder'){
+      stage('00550\norg.csstudio.display.builder'){
         steps{
           dir("org.csstudio.display.builder"){
             git(url: "${env.displayBuilderRepo}", branch: "${env.displayBuilderRepoBranch}")
@@ -143,7 +143,7 @@ pipeline {
       /*
        * Getting and building the "org.csstudio.product" project.
        */
-      stage('00600 - org.csstudio.product'){
+      stage('00600\norg.csstudio.product'){
         steps{
           dir("org.csstudio.product"){
             git(url: "${csstudioRepo}/org.csstudio.product.git", branch: "${env.repoBranch}")
@@ -155,7 +155,7 @@ pipeline {
       /*
        * Getting and building the "org.csstudio.ess.product" project.
        */
-      stage('00700 - org.csstudio.ess.product'){
+      stage('00700\norg.csstudio.ess.product'){
         steps{
           dir("org.csstudio.ess.product"){
             git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
@@ -170,7 +170,7 @@ pipeline {
        * The artifactory plugin doesn't fully support declarative pipeline.
        * Therefore a script-block is needed.
        */
-      stage ('00700 - Ship artifact - optional') {
+      stage('00750\ndeploy artifacts') {
         when {
           environment name: 'useArtifactory', value: 'true'
         }
