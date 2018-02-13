@@ -191,7 +191,7 @@ pipeline {
             ]
             }"""
             server.upload(uploadSpec)
-            slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} loaded into Artifactory at ${artifactoryFolder}."
+            slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} (build ${env.BUILD_NUMBER}) loaded into Artifactory at ${artifactoryFolder}."
           }
         }
       }
