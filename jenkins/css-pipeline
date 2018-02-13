@@ -50,7 +50,7 @@ pipeline {
       /*
        * Print out environment variables and make sure a clean working space is setup.
        */
-      stage("00000 - workspace-preparation "){
+      stage("00000\nworkspace-preparation "){
         steps{
           echo "csstudioRepo = ${env.csstudioRepo}"
           echo "branch = ${env.repoBranch} \nsend email to: ${env.email}"
