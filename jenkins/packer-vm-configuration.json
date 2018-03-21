@@ -1,7 +1,6 @@
 {
   "variables": {
-    "source_url": "https://artifactory01.esss.lu.se:443/artifactory/swi-pkg/virtualbox/1708.01/esss-centos-7.ova",
-    "devenv_version": "{{env `DEVENV_VERSION`}}",
+    "source_url": "https://artifactory01.esss.lu.se:443/artifactory/swi-pkg/virtualbox/1708.02/esss-centos-7.ova",
     "description": "ESS DevEnv Vagrant base box based on CentOS 7"
   },
   "builders": [
@@ -22,10 +21,7 @@
     {
       "type": "shell",
       "script": "scripts/provision.sh",
-      "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
-      "environment_vars": [
-        "DEVENV_VERSION={{user `devenv_version`}}"
-      ]
+      "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     }
   ]
 }
