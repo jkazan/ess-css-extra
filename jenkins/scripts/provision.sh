@@ -15,7 +15,7 @@ yum clean all
 # Move uploaded ansible files to /etc
 mkdir /etc/ansible
 
-ANSIBLE_VERSION=2.3.1.0
+ANSIBLE_VERSION=2.4.2.0
 
 
 export
@@ -31,6 +31,7 @@ cat << EOF > /etc/ansible/requirements.yml
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-oracle-jdk
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-repository
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-desktop-base
+- src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-conda
 - src: git+https://bitbucket.org/europeanspallationsource/ics-ans-role-cs-studio
 EOF
 
