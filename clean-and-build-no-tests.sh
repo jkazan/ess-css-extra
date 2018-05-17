@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_172.jdk/Contents/Home
 
 echo ""
 echo "===="
@@ -62,12 +62,6 @@ echo "===="
 echo "==== BUILDING org.csstudio.display.builder"
 echo "===="
 (cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee 5_org.csstudio.display.builder.log
-
-echo ""
-echo "===="
-echo "==== BUILDING org.csstudio.product"
-echo "===="
-(cd org.csstudio.product/org.csstudio.product; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean verify) | tee 6_org.csstudio.product.log
 
 echo ""
 echo "===="

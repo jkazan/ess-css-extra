@@ -131,24 +131,12 @@ pipeline {
       /*
        * Getting and building the "org.csstudio.display.builder" project.
        */
-      stage('00550\norg.csstudio.display.builder'){
+      stage('00600\norg.csstudio.display.builder'){
         steps{
           dir("org.csstudio.display.builder"){
             git(url: "${env.displayBuilderRepo}", branch: "${env.displayBuilderRepoBranch}")
           }
           sh "cd org.csstudio.display.builder && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:${env.WORKSPACE}/ess-css-extra/ess_css_comp_repo clean verify"
-        }
-      }
-
-      /*
-       * Getting and building the "org.csstudio.product" project.
-       */
-      stage('00600\norg.csstudio.product'){
-        steps{
-          dir("org.csstudio.product"){
-            git(url: "${csstudioRepo}/org.csstudio.product.git", branch: "${env.repoBranch}")
-          }
-          sh "cd org.csstudio.product/org.csstudio.product && mvn ${env.MVNOPT} --settings ../../ess-css-extra/maven/settings.xml clean verify"
         }
       }
 
@@ -170,7 +158,7 @@ pipeline {
        * The artifactory plugin doesn't fully support declarative pipeline.
        * Therefore a script-block is needed.
        */
-      stage('00750\ndeploy artifacts') {
+      stage('00800\ndeploy artifacts') {
         when {
           environment name: 'useArtifactory', value: 'true'
         }

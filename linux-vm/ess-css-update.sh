@@ -41,10 +41,11 @@ if [ -f cs-studio-ess-$VERSION-linux.gtk.x86_64.tar.gz ]; then
   tar -zxvf cs-studio-ess-$VERSION-linux.gtk.x86_64.tar.gz
   if [ -d cs-studio ]; then
     echo "Updating CS-Studio to version $VERSION"
-    mv ESS\ CS-Studio cs-studio
-    mv -v cs-studio/cs-studio.ini cs-studio/cs-studio.ini.original
-    cp -fv ~/configuration/cs-studio.ini cs-studio/
+    mv -v cs-studio/ESS\ CS-Studio cs-studio/cs-studio
+    mv -v cs-studio/ESS\ CS-Studio.desktop cs-studio/cs-studio.desktop
+    mv -v cs-studio/ESS\ CS-Studio.ini cs-studio/cs-studio.ini.original
     mv -v cs-studio/configuration/plugin_customization.ini cs-studio/configuration/plugin_customization.ini.original
+    cp -fv ~/configuration/cs-studio.ini cs-studio/
     cp -fv ~/configuration/plugin_customization.ini cs-studio/configuration/
     rm -fr ~/cs-studio
     mv cs-studio ~/

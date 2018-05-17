@@ -25,43 +25,43 @@ rm -f ?_*.log
 # To reduce maven verbosity
 # MAVEN_OPTS = $MAVEN_OPTS -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 # MVNOPT="-P !cs-studio-sites,!eclipse-sites -B -DlocalArtifacts=ignore"
-MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites"
+MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites -Dmaven.test.skip=true -DskipTests=true"
 
 echo ""
 echo "===="
 echo "==== BUILDING maven-osgi-bundles"
 echo "===="
-(cd maven-osgi-bundles; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 0_maven-osgi-bundles.log
+# (cd maven-osgi-bundles; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 0_maven-osgi-bundles.log
 
 echo ""
 echo "===="
 echo "==== BUILDING cs-studio-thirdparty"
 echo "===="
-(cd cs-studio-thirdparty; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 1_cs-studio-thirdparty.log
+# (cd cs-studio-thirdparty; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 1_cs-studio-thirdparty.log
 
 echo ""
 echo "===="
 echo "==== BUILDING diirt"
 echo "===="
-(cd diirt; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 2_diirt.log
+# (cd diirt; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 2_diirt.log
 
 echo ""
 echo "===="
 echo "==== BUILDING cs-studio/core"
 echo "===="
-(cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean verify) | tee 3_cs-studio-core.log
+# (cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean verify) | tee 3_cs-studio-core.log
 
 echo ""
 echo "===="
 echo "==== BUILDING cs-studio/applications"
 echo "===="
-(cd cs-studio/applications; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean verify) | tee 4_cs-studio-applications.log
+# (cd cs-studio/applications; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean verify) | tee 4_cs-studio-applications.log
 
 echo ""
 echo "===="
 echo "==== BUILDING org.csstudio.display.builder"
 echo "===="
-(cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee 5_org.csstudio.display.builder.log
+# (cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee 5_org.csstudio.display.builder.log
 
 echo ""
 echo "===="
