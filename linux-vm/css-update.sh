@@ -28,12 +28,12 @@ elif [ $# -lt 2 ]; then
     print_usage
   else
     NEW_VERSION=$1
-    wget "https://artifactory01.esss.lu.se:443/artifactory/CS-Studio/production/$NEW_VERSION/cs-studio-ess-$NEW_VERSION-linux.gtk.x86_64.tar.gz"
+    wget "https://artifactory.esss.lu.se/artifactory/CS-Studio/production/$NEW_VERSION/cs-studio-ess-$NEW_VERSION-linux.gtk.x86_64.tar.gz"
   fi
 else
   if [ "$1" == '-d' ]; then
     NEW_VERSION=$2
-    wget "https://artifactory01.esss.lu.se:443/artifactory/CS-Studio/development/$NEW_VERSION/cs-studio-ess-$NEW_VERSION-linux.gtk.x86_64.tar.gz"
+    wget "https://artifactory.esss.lu.se/artifactory/CS-Studio/development/$NEW_VERSION/cs-studio-ess-$NEW_VERSION-linux.gtk.x86_64.tar.gz"
   else
     print_usage
   fi
