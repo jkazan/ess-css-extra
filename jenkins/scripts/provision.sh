@@ -8,17 +8,12 @@ export PATH=/usr/local/bin:$PATH
 export csstudio_version=$(curl https://raw.githubusercontent.com/ESSICS/org.csstudio.ess.product/production/features/org.csstudio.ess.product.configuration.feature/rootfiles/ess-version.txt)
 csstudio_repository=production
 
-# Update all packages
-yum update -y
-yum install -y xorg-x11-server-Xvfb
-yum clean all
 # Move uploaded ansible files to /etc
 mkdir /etc/ansible
 
 ANSIBLE_VERSION=2.4.2.0
 
 
-export
 # Install ansible-playbook and ansible-galaxy PEX files
 for exe in ansible-playbook ansible-galaxy
 do
@@ -46,13 +41,16 @@ cat << EOF > /etc/ansible/csstudio.yml
     - role: ics-ans-role-cs-studio
 EOF
 
-# Start virtual display
-/usr/bin/Xvfb :99 -screen 1 1024x768x24 &
-export DISPLAY=:99
-
 # Install CS-Studio
 ansible-galaxy install -r /etc/ansible/requirements.yml -p /etc/ansible/roles
 ansible-playbook -e csstudio_version=${csstudio_version} -e csstudio_repository=${csstudio_repository} /etc/ansible/csstudio.yml
+
+# Install a virtual framebuffer X server to run CS-Studio
+yum install -y xorg-x11-server-Xvfb
+
+# Start virtual display
+/usr/bin/Xvfb :99 -screen 1 1024x768x24 &
+export DISPLAY=:99
 
 # Run CS-Studio
 xvfb-run /usr/local/bin/css &
