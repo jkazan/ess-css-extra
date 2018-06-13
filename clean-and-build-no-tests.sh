@@ -41,12 +41,6 @@ echo "===="
 
 echo ""
 echo "===="
-echo "==== BUILDING diirt"
-echo "===="
-(cd diirt; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 2_diirt.log
-
-echo ""
-echo "===="
 echo "==== BUILDING cs-studio/core"
 echo "===="
 (cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean verify) | tee 3_cs-studio-core.log
