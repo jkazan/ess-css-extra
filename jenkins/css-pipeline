@@ -100,19 +100,6 @@ pipeline {
       }
 
       /*
-       * Getting and building the "diirt" project.
-       * Contains a time critical test that might fail depending on slave load
-       */
-      stage('00400\ndiirt'){
-        steps{
-          dir("diirt"){
-            git(url: "${env.diirtRepo}", branch: "${env.repoBranch}")
-          }
-          sh "cd diirt && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml clean verify"
-        }
-      }
-
-      /*
        * Getting and building the "cs-studio" project.
        */
       stage('00500\ncs‑studio'){
@@ -136,6 +123,7 @@ pipeline {
           dir("org.csstudio.display.builder"){
             git(url: "${env.displayBuilderRepo}", branch: "${env.displayBuilderRepoBranch}")
           }
+          sh "cd org.csstudio.display.builder/org.csstudio.display.builder.editor.rcp && ant -f javadoc.xml clean all"
           sh "cd org.csstudio.display.builder && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:${env.WORKSPACE}/ess-css-extra/ess_css_comp_repo clean verify"
         }
       }

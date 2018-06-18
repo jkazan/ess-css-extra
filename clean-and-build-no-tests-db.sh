@@ -41,12 +41,6 @@ echo "===="
 
 echo ""
 echo "===="
-echo "==== BUILDING diirt"
-echo "===="
-# (cd diirt; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 2_diirt.log
-
-echo ""
-echo "===="
 echo "==== BUILDING cs-studio/core"
 echo "===="
 # (cd cs-studio/core; time mvn $MVNOPT --settings ../../ess-css-extra/maven/settings.xml clean verify) | tee 3_cs-studio-core.log
@@ -61,7 +55,8 @@ echo ""
 echo "===="
 echo "==== BUILDING org.csstudio.display.builder"
 echo "===="
-(cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee 5_org.csstudio.display.builder.log
+(cd org.csstudio.display.builder/org.csstudio.display.builder.editor.rcp; time ant -f javadoc.xml clean all | tee ../../5_org.csstudio.display.builder.log)
+(cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee -a 5_org.csstudio.display.builder.log
 
 echo ""
 echo "===="
