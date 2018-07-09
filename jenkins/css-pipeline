@@ -188,11 +188,11 @@ pipeline {
       }
 
       failure {
-        mail from: "jenkins@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_FAILURE}", body: "${env.EMAIL_BODY_FAILURE}"
+        mail from: "noreply@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_FAILURE}", body: "${env.EMAIL_BODY_FAILURE}"
       }
 
       success {
-        mail from: "jenkins@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_SUCCESS}", body: "${env.EMAIL_BODY_SUCCESS}"
+        mail from: "noreply@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_SUCCESS}", body: "${env.EMAIL_BODY_SUCCESS}"
       }
 
     }
