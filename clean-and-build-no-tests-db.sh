@@ -62,24 +62,8 @@ echo ""
 echo "===="
 echo "==== BUILDING org.csstudio.ess.product"
 echo "===="
-#(cd org.csstudio.ess.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 7_org.csstudio.ess.product.log
-( \
-  cd org.csstudio.ess.product; \
-  time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify; \
-  cd repository/target/products; \
-  export CSSVER=$(cat cs-studio-ess/linux/gtk/x86_64/cs-studio/ess-version.txt); \
-  echo "Fixing BATIK dependencies for CS-Studio ${CSSVER}..."; \
-  zip -d cs-studio-ess-${CSSVER}-win32.win32.x86_64.zip "plugins/org.apache.batik*1.8*.jar"; \
-  zip -d cs-studio-ess-${CSSVER}-macosx.cocoa.x86_64.zip "ESS CS-Studio.app/Contents/Eclipse/plugins/org.apache.batik*1.8*.jar"; \
-  mkdir cs-studio-ess-${CSSVER}-linux.gtk.x86_64; \
-  cd cs-studio-ess-${CSSVER}-linux.gtk.x86_64; \
-  tar -zxf ../cs-studio-ess-${CSSVER}-linux.gtk.x86_64.tar.gz; \
-  find ./cs-studio/plugins -type f -iname 'org.apache.batik*1.8*.jar' -delete; \
-  rm -f ../cs-studio-ess-${CSSVER}-linux.gtk.x86_64.tar.gz; \
-  tar -zcf ../cs-studio-ess-${CSSVER}-linux.gtk.x86_64.tar.gz .; \
-  cd ..; \
-  rm -fr cs-studio-ess-${CSSVER}-linux.gtk.x86_64 \
-) | tee 7_org.csstudio.ess.product.log
+(cd org.csstudio.ess.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 7_org.csstudio.ess.product.log
+(cd org.csstudio.ess.product/build; time ./batik-patch.sh) | tee -a 7_org.csstudio.ess.product.log
 
 echo ""
 tail ?_*.log
