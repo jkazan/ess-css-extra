@@ -8,7 +8,7 @@
 # Print usage function.
 print_usage()
 {
-  echo "Usage: css-update [-d] <version>"
+  echo "Usage: ess-css-update [-d] <version>"
   echo "  -d        Updates from the 'development' repository."
   echo "  <version> The required version number in <major>.<minor>.<release>.<build> format."
 }

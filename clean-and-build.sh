@@ -63,9 +63,10 @@ echo "===="
 echo "==== BUILDING org.csstudio.ess.product"
 echo "===="
 (cd org.csstudio.ess.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 7_org.csstudio.ess.product.log
+(cd org.csstudio.ess.product/build; time ./batik-patch.sh) | tee -a 7_org.csstudio.ess.product.log
 
 echo ""
-tail ?_*.log
+tail -n 25 ?_*.log
 echo ""
 
 # Displaying execution time
