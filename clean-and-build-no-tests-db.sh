@@ -66,7 +66,7 @@ echo "===="
 (cd org.csstudio.ess.product/build; time ./batik-patch.sh) | tee -a 7_org.csstudio.ess.product.log
 
 echo ""
-tail ?_*.log
+tail -n 25 ?_*.log
 echo ""
 
 # Displaying execution time
