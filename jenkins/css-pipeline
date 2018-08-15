@@ -132,9 +132,11 @@ pipeline {
        */
       stage('00700\norg.csstudio.ess.product'){
         steps{
+		  def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
           dir("org.csstudio.ess.product"){
             git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
           }
+		  sh "cd org.csstudio.ess.product && source prepare-next-release.sh ${versionNBR}b${env.BUILD_NUMBER} false"
           sh "cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml clean verify"
           sh "cd org.csstudio.ess.product/build && ./batik-patch.sh"
         }
@@ -167,7 +169,7 @@ pipeline {
             ]
             }"""
             server.upload(uploadSpec)
-            slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} (build ${env.BUILD_NUMBER}) loaded into Artifactory at ${artifactoryFolder}."
+            slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} loaded into Artifactory at ${artifactoryFolder}."
           }
         }
       }
