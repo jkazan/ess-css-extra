@@ -137,10 +137,10 @@ pipeline {
           }
 		  script {
 		    def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
+		    sh "cd org.csstudio.ess.product && source prepare-next-release.sh ${versionNBR}b${env.BUILD_NUMBER} false"
+		    sh "cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml clean verify"
+		    sh "cd org.csstudio.ess.product/build && ./batik-patch.sh"
 		  }
-		  sh "cd org.csstudio.ess.product && source prepare-next-release.sh ${versionNBR}b${env.BUILD_NUMBER} false"
-          sh "cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml clean verify"
-          sh "cd org.csstudio.ess.product/build && ./batik-patch.sh"
         }
       }
 
