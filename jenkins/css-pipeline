@@ -135,7 +135,7 @@ pipeline {
           dir("org.csstudio.ess.product"){
             git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
           }
-		  sh "cd org.csstudio.ess.product/build && source ./addBuildNumberToVersion.sh ${env.repoBranch} ${env.BUILD_NUMBER}"
+		  sh "cd org.csstudio.ess.product && ./prepare-next-jenkins-release.sh ${env.repoBranch} ${env.BUILD_NUMBER}"
 		  sh "cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml clean verify"
 		  sh "cd org.csstudio.ess.product/build && ./batik-patch.sh"
         }
