@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_172.jdk/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home
 
 echo ""
 echo "===="
@@ -66,7 +66,7 @@ echo "===="
 (cd org.csstudio.ess.product/build; time ./batik-patch.sh) | tee -a 7_org.csstudio.ess.product.log
 
 echo ""
-tail -n 25 ?_*.log
+tail -n 25 ?_*.log | grep -e '\[INFO\] BUILD' -e '==>'
 echo ""
 
 # Displaying execution time

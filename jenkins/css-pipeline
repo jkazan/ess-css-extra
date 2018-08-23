@@ -135,8 +135,9 @@ pipeline {
           dir("org.csstudio.ess.product"){
             git(url: "${csstudioRepo}/org.csstudio.ess.product.git", branch: "${env.repoBranch}")
           }
-          sh "cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml clean verify"
-          sh "cd org.csstudio.ess.product/build && ./batik-patch.sh"
+		  sh "cd org.csstudio.ess.product && ./prepare-next-jenkins-release.sh ${env.repoBranch} ${env.BUILD_NUMBER}"
+		  sh "cd org.csstudio.ess.product && mvn ${env.MVNOPT} --settings ../ess-css-extra/maven/settings.xml clean verify"
+		  sh "cd org.csstudio.ess.product/build && ./batik-patch.sh"
         }
       }
 
@@ -153,7 +154,7 @@ pipeline {
         steps{
           script {
             def server = Artifactory.server "${env.artifacoryServerID}"
-            def versionNBR = sh (script: """grep -oEm 1 -e '<version>(.*?)</version>' ${env.WORKSPACE}/org.csstudio.ess.product/pom.xml | cut -d ">" -f2 | cut -d "<" -f1""", returnStdout: true).trim()
+            def versionNBR = sh (script: """cat ${env.WORKSPACE}/org.csstudio.ess.product/features/org.csstudio.ess.product.configuration.feature/rootfiles/ess-version.txt""", returnStdout: true).trim()
             def uploadSpec = """{
             "files": [
             {
@@ -167,7 +168,7 @@ pipeline {
             ]
             }"""
             server.upload(uploadSpec)
-            slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} (build ${env.BUILD_NUMBER}) loaded into Artifactory at ${artifactoryFolder}."
+            slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} loaded into Artifactory at ${artifactoryFolder}."
           }
         }
       }
