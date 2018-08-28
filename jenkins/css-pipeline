@@ -173,12 +173,16 @@ pipeline {
           }
         }
       }
-      stage('00900\ndeploy build information and retent old builds') {
+      stage('00900\ndeploy build information and purge old builds') {
         when {
           expression { env.repoBranch != 'production' }
         }
         steps {
           buildInfo.retention maxBuilds: 7
+          buildInfo.env.filter.addInclude("BUILD*")
+          buildInfo.env.filter.addInclude("EPICS*")
+          buildInfo.env.filter.addInclude("JAVA_HOME")
+          buildInfo.env.collect()
           server.publishBuildInfo(buildInfo)
         }
       }
