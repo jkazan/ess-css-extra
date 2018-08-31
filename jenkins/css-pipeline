@@ -1,4 +1,6 @@
 #!groovy​
+def server = Artifactory.server "${env.artifacoryServerID}"
+def buildInfo = Artifactory.newBuildInfo()
 pipeline {
 
   /*
@@ -153,7 +155,6 @@ pipeline {
         }
         steps{
           script {
-            def server = Artifactory.server "${env.artifacoryServerID}"
             def versionNBR = sh (script: """cat ${env.WORKSPACE}/org.csstudio.ess.product/features/org.csstudio.ess.product.configuration.feature/rootfiles/ess-version.txt""", returnStdout: true).trim()
             def uploadSpec = """{
             "files": [
@@ -167,14 +168,24 @@ pipeline {
             }
             ]
             }"""
-            server.upload(uploadSpec)
+            server.upload(uploadSpec, buildInfo)
             slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} loaded into Artifactory at ${artifactoryFolder}."
           }
         }
       }
-
-
-
+      stage('00900\ndeploy build information and purge old builds') {
+        when {
+          expression { env.repoBranch != 'production' }
+        }
+        steps {
+          buildInfo.retention maxBuilds: 7
+          buildInfo.env.filter.addInclude("BUILD*")
+          buildInfo.env.filter.addInclude("EPICS*")
+          buildInfo.env.filter.addInclude("JAVA_HOME")
+          buildInfo.env.collect()
+          server.publishBuildInfo(buildInfo)
+        }
+      }
     }
 
     /*
