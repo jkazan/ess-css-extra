@@ -1,6 +1,6 @@
 #!groovy​
-def server = Artifactory.server "${env.artifacoryServerID}"
-def buildInfo = Artifactory.newBuildInfo()
+def cssArtifactoryServer = Artifactory.server "${env.artifacoryServerID}"
+def cssArtifactoryBuildInfo = Artifactory.newBuildInfo()
 pipeline {
 
   /*
@@ -168,7 +168,7 @@ pipeline {
             }
             ]
             }"""
-            server.upload(uploadSpec, buildInfo)
+            server.upload(uploadSpec, cssArtifactoryBuildInfo)
             slackSend channel: "#cs-studio", message: "CS-Studio ver. ${versionNBR} loaded into Artifactory at ${artifactoryFolder}."
           }
         }
@@ -178,12 +178,14 @@ pipeline {
           expression { env.repoBranch != 'production' }
         }
         steps {
-          buildInfo.retention maxBuilds: 7
-          buildInfo.env.filter.addInclude("BUILD*")
-          buildInfo.env.filter.addInclude("EPICS*")
-          buildInfo.env.filter.addInclude("JAVA_HOME")
-          buildInfo.env.collect()
-          server.publishBuildInfo(buildInfo)
+          script {
+            cssArtifactoryBuildInfo.retention maxBuilds: 7
+            cssArtifactoryBuildInfo.env.filter.addInclude("BUILD*")
+            cssArtifactoryBuildInfo.env.filter.addInclude("EPICS*")
+            cssArtifactoryBuildInfo.env.filter.addInclude("JAVA_HOME")
+            cssArtifactoryBuildInfo.env.collect()
+            cssArtifactoryServer.publishBuildInfo(cssArtifactoryBuildInfo)
+          }
         }
       }
     }
