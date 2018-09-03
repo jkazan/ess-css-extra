@@ -173,13 +173,19 @@ pipeline {
           }
         }
       }
-      stage('00900\ndeploy build information and purge old builds') {
+      stage('00890\ndevelopment: enable purge of builds') {
         when {
           expression { env.repoBranch != 'production' }
         }
         steps {
           script {
             cssArtifactoryBuildInfo.retention maxBuilds: 7
+          }
+        }
+      }
+      stage('00900\ndeploy build information and purge old builds') {
+        steps {
+          script {
             cssArtifactoryBuildInfo.env.filter.addInclude("BUILD*")
             cssArtifactoryBuildInfo.env.filter.addInclude("EPICS*")
             cssArtifactoryBuildInfo.env.filter.addInclude("JAVA_HOME")
