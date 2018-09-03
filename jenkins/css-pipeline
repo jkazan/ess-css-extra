@@ -173,7 +173,7 @@ pipeline {
           }
         }
       }
-      stage('00890\ndevelopment: enable purge of builds') {
+      stage('00900\nenable build purging') {
         when {
           expression { env.repoBranch != 'production' }
         }
@@ -183,7 +183,7 @@ pipeline {
           }
         }
       }
-      stage('00900\ndeploy build information and purge old builds') {
+      stage('01000\nbuildInfo deployment and cleanup') {
         steps {
           script {
             cssArtifactoryBuildInfo.env.filter.addInclude("BUILD*")
