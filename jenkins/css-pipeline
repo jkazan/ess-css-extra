@@ -179,7 +179,7 @@ pipeline {
         }
         steps {
           script {
-            cssArtifactoryBuildInfo.retention maxBuilds: 7
+            cssArtifactoryBuildInfo.retention maxBuilds: 7, deleteBuildArtifacts: true
           }
         }
       }
