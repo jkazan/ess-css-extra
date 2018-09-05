@@ -176,6 +176,7 @@ pipeline {
       stage('00900\nenable build purging') {
         when {
           expression { env.repoBranch != 'production' }
+          environment name: 'useArtifactory', value: 'true'
         }
         steps {
           script {
@@ -184,6 +185,9 @@ pipeline {
         }
       }
       stage('01000\nbuildInfo deployment and cleanup') {
+        when {
+          environment name: 'useArtifactory', value: 'true'
+        }
         steps {
           script {
             cssArtifactoryBuildInfo.env.filter.addInclude("BUILD*")
