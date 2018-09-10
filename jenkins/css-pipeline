@@ -207,6 +207,7 @@ pipeline {
      * Deletes all files created by the pipeline
      */
       always {
+        junit "**/surefire-reports/*.xml"
         deleteDir()
       }
 
