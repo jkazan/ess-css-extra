@@ -14,8 +14,10 @@ pipeline {
     MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites -Dmaven.repo.local=/home/jenkins/workspace/css-maven-repo/.m2 -Dcsstudio.composite.repo=/home/jenkins/workspace/${env.JOB_NAME}/ess-css-extra/ess_css_comp_repo"
     EMAIL_BODY_FAILURE="${env.JOB_BASE_NAME} failed to build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
     EMAIL_BODY_SUCCESS="${env.JOB_BASE_NAME} built successfully!\nDirect job link: ${env.RUN_DISPLAY_URL}"
+    EMAIL_BODY_UNSTABLE="${env.JOB_BASE_NAME} created an unstable build!\nDirect job link: ${env.RUN_DISPLAY_URL}"
     EMAIL_SUBJECT_FAILURE="${env.JOB_BASE_NAME} failed to build"
     EMAIL_SUBJECT_SUCCESS="${env.JOB_BASE_NAME} built successfully"
+    EMAIL_SUBJECT_UNSTABLE="${env.JOB_BASE_NAME} created an unstable build"
   }
 
   /*
@@ -213,6 +215,10 @@ pipeline {
 
       failure {
         mail from: "noreply@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_FAILURE}", body: "${env.EMAIL_BODY_FAILURE}"
+      }
+
+      unstable {
+        mail from: "noreply@esss.se", to: "${email}", subject: "${env.EMAIL_SUBJECT_UNSTABLE}", body: "${env.EMAIL_BODY_UNSTABLE}"
       }
 
       success {
