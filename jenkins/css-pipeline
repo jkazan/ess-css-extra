@@ -62,6 +62,7 @@ pipeline {
           echo "path to workspace: ${env.WORKSPACE}"
           sh "export"
           sh 'rm -rf /home/jenkins/workspace/css-maven-repo/.m2'
+          sh "mvn -help"
         }
       }
 
