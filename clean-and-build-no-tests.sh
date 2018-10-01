@@ -25,7 +25,7 @@ rm -f ?_*.log
 # To reduce maven verbosity
 # MAVEN_OPTS = $MAVEN_OPTS -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 # MVNOPT="-P !cs-studio-sites,!eclipse-sites -B -DlocalArtifacts=ignore"
-MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dmaven.test.skip=true -DskipTests=true"
+MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites -Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dmaven.test.skip=true -DskipTests=true"
 
 echo ""
 echo "===="
