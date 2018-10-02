@@ -65,7 +65,35 @@ echo "===="
 (cd org.csstudio.ess.product; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml clean verify) | tee 7_org.csstudio.ess.product.log
 
 echo ""
-tail -n 25 ?_*.log | grep -e '\[INFO\] BUILD' -e '==>'
+echo "0_maven-osgi-bundles.log"
+echo "================================================================================"
+cat 0_maven-osgi-bundles.log | grep -e '\[ERROR\]' -e '\[FATAL\]'
+echo "================================================================================"
+echo ""
+echo "1_cs-studio-thirdparty.log"
+echo "================================================================================"
+cat 1_cs-studio-thirdparty.log | grep -e '\[ERROR\]' -e '\[FATAL\]'
+echo "================================================================================"
+echo ""
+echo "3_cs-studio-core.log"
+echo "================================================================================"
+cat 3_cs-studio-core.log | grep -e '\[ERROR\]' -e '\[FATAL\]'
+echo "================================================================================"
+echo ""
+echo "4_cs-studio-applications.log"
+echo "================================================================================"
+cat 4_cs-studio-applications.log | grep -e '\[ERROR\]' -e '\[FATAL\]'
+echo "================================================================================"
+echo ""
+echo "5_org.csstudio.display.builder.log"
+echo "================================================================================"
+cat 5_org.csstudio.display.builder.log | grep -e '\[ERROR\]' -e '\[FATAL\]'
+echo "================================================================================"
+echo ""
+echo "7_org.csstudio.ess.product.log"
+echo "================================================================================"
+cat 7_org.csstudio.ess.product.log | grep -e '\[ERROR\]' -e '\[FATAL\]'
+echo "================================================================================"
 echo ""
 
 # Displaying execution time
