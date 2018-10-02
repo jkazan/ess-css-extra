@@ -25,7 +25,7 @@ rm -f ?_*.log
 # To reduce maven verbosity
 # MAVEN_OPTS = $MAVEN_OPTS -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 # MVNOPT="-P !cs-studio-sites,!eclipse-sites -B -DlocalArtifacts=ignore"
-MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites -Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dmaven.test.skip=true -DskipTests=true"
+MVNOPT="-B -P ess-css-settings,platform-default,csstudio-composite-repo-enable,eclipse-sites -Dorg.slf4j.simpleLogger.defaultLogLevel=warn"
 
 echo ""
 echo "===="
@@ -55,10 +55,10 @@ echo ""
 echo "===="
 echo "==== BUILDING org.csstudio.display.builder"
 echo "===="
-# (cd org.csstudio.display.builder/org.csstudio.display.builder.editor.rcp; time ant -f javadoc.xml clean all | tee ../../5_org.csstudio.display.builder.log)
-# (cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee -a 5_org.csstudio.display.builder.log
+(cd org.csstudio.display.builder/org.csstudio.display.builder.editor.rcp; time ant -f javadoc.xml clean all | tee ../../5_org.csstudio.display.builder.log)
+(cd org.csstudio.display.builder; time mvn $MVNOPT --settings ../ess-css-extra/maven/settings.xml -Dcss_repo=file:/Users/claudiorosati/Projects/GitHub/ess-css-extra/ess_css_comp_repo clean verify) | tee -a 5_org.csstudio.display.builder.log
 
-echo ""
+# echo ""
 echo "===="
 echo "==== BUILDING org.csstudio.ess.product"
 echo "===="
